@@ -223,68 +223,7 @@
     </style>
 </head>
 <body>
-    <?php
-    session_start();
-    
-    $error_message = '';
-    $success_message = '';
-    
-    // Database configuration
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "skema_db";
-    
-    // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-    
-    // Handle form submission
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $email = mysqli_real_escape_string($conn, $_POST['email']);
-        $username_input = mysqli_real_escape_string($conn, $_POST['username']);
-        $password_input = $_POST['password'];
-        $remember_me = isset($_POST['remember_me']) ? true : false;
-        
-        // Validate input
-        if (empty($email) || empty($username_input) || empty($password_input)) {
-            $error_message = "Please fill in all fields";
-        } else {
-            // Check user credentials
-            $sql = "SELECT id, username, email, password FROM users WHERE (email = ? OR username = ?) AND password = ?";
-            $stmt = $conn->prepare($sql);
-            $hashed_password = md5($password_input); // In production, use password_hash() and password_verify()
-            $stmt->bind_param("sss", $email, $username_input, $hashed_password);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            
-            if ($result->num_rows == 1) {
-                $user = $result->fetch_assoc();
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['username'] = $user['username'];
-                $_SESSION['email'] = $user['email'];
-                
-                if ($remember_me) {
-                    setcookie('remember_user', $user['username'], time() + (86400 * 30), "/"); // 30 days
-                }
-                
-                $success_message = "Login successful! Redirecting...";
-                // In a real application, redirect to dashboard
-                // header("Location: dashboard.php");
-                // exit();
-            } else {
-                $error_message = "Invalid email/username or password";
-            }
-            $stmt->close();
-        }
-    }
-    
-    $conn->close();
-    ?>
+
 
     <div class="container">
         <div class="left-section">
