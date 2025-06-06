@@ -259,14 +259,6 @@
                 </div>
                 
                 <button type="submit" class="login-btn">Log In</button>
-                
-                <?php if ($error_message): ?>
-                    <div class="error-message"><?php echo $error_message; ?></div>
-                <?php endif; ?>
-                
-                <?php if ($success_message): ?>
-                    <div class="success-message"><?php echo $success_message; ?></div>
-                <?php endif; ?>
             </form>
         </div>
     </div>
