@@ -34,15 +34,18 @@ body {
     align-items: center;
 }
 
-.logo {
-    color: #ffffff;
-    font-size: 1.8rem;
-    font-weight: bold;
-}
+        .logo {
+            font-family: "Rammetto One", sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 150px;
+            letter-spacing: 8px;
+        }
 
-.logo .m {
-    color: #e74c3c;
-}
+        .logo .m {
+            color: #E94560;
+        }
 
 .nav {
     display: flex;

@@ -5,16 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SKEMA - Movie Platform</title>
     <link rel="stylesheet" href="home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rammetto+One&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Header -->
     <header class="header">
-        <div class="logo">SKE<span class="red">M</span>A</div>
-        <nav class="nav">
-            <a href="#home">Home</a>
-            <a href="#about">About us</a>
-            <a href="#profile">Profile</a>
-        </nav>
+        <div class="container">
+             <div class="logo">
+                SKE<span class="m">MA</span>
+            </div>
+            <nav class="nav">
+                <a href="#" class="nav-link">Home</a>
+                <a href="#" class="nav-link">About us</a>
+                <a href="../profile/profile.php" class="nav-link">Profile</a>
+            </nav>
+        </div>
     </header>
 
     <!-- Hero Section -->

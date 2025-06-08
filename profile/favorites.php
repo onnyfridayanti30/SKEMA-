@@ -22,17 +22,26 @@ $profileImage = $_SESSION["profile_image"] ?? 'default_user.png'; // fallback ji
 </head>
 <body>
 
-<div class="container">
-  <div class="sidebar">
+<div class="header">
     <div class="logo">SKE<span class="m">MA</span></div>
-    <h3>User Profile</h3>
-    <div class="sidebar-item"><i class='bx bx-user'></i> <a href="profile.php">User Info</a></div>
-    <div class="sidebar-item active"><i class='bx bx-heart'></i> Favorites</div>
-    <div class="sidebar-item"><i class='bx bx-log-out'></i> <a href="../logout.php">Log Out</a></div>
+    <a href="../home/home.php"><button class="home-btn">Home</button></a>
   </div>
 
+  <!-- Content -->
+  
+    <!-- Sidebar -->
+   
+
+<div class="container">
+
+ <div class="sidebar">
+      <h2>User Profile</h2>
+      <div class="sidebar-item active"><i class='bx bx-user'></i><a href="favorites.php">User Info</a > </div>
+      <div class="sidebar-item Favorites"><i class='bx bx-heart'></i><a href="favorites.php">Favorites</a ></div>
+      <div class="sidebar-item logout-item"><i class='bx bx-log-out'></i> <a href="../login&register/login.php">Log Out</a></div>
+    </div>
+
   <div class="main-content">
-    <a href="../home/home.php" class="home-btn">Home</a>
 
     <div class="profile-section">
       <img src="./img/<?= htmlspecialchars($profileImage) ?>" alt="Profile" class="profile-pic" />
