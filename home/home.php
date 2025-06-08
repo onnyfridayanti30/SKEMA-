@@ -45,7 +45,7 @@ $gradients = [
         <nav class="nav">
             <a href="#home">Home</a>
             <a href="#about">About us</a>
-            <a href="#profile">Profile</a>
+            <a href="../profile/profile.php">Profile</a>
         </nav>
     </header>
 
