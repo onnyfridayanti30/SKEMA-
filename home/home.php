@@ -1,41 +1,9 @@
-<?php
-// index.php
-
-// Data film
-$featured_movie = [
-    'title' => 'Lawat',
-    'description' => 'Pak Wayan yang merupakan seorang dalang wayang kulit yang ingin anaknya melestarikan wayang. Namun, Agus lebih memilih musik modern, menyebabkan konflik dan pertengkaran terjadi.'
-];
-
-$hot_movies = [
-    ['title' => 'Lawat', 'genre' => 'Drama'],
-    ['title' => 'Clarity', 'genre' => 'Romance'],
-    ['title' => 'Suara Lukisan', 'genre' => 'Art'],
-    ['title' => 'Harapan Harmoni', 'genre' => 'Music'],
-    ['title' => 'Pulang Sekolah', 'genre' => 'Youth'],
-    ['title' => 'Terehan', 'genre' => 'Action'],
-    ['title' => 'Lensa Kanvas', 'genre' => 'Art'],
-    ['title' => 'Bukumu Kala Itu', 'genre' => 'Romance']
-];
-
-// Warna gradient untuk poster
-$gradients = [
-    'linear-gradient(45deg, #8B4513, #D2691E)',
-    'linear-gradient(45deg, #2c3e50, #3498db)',
-    'linear-gradient(45deg, #8e44ad, #3498db)',
-    'linear-gradient(45deg, #27ae60, #2ecc71)',
-    'linear-gradient(45deg, #e74c3c, #c0392b)',
-    'linear-gradient(45deg, #f39c12, #e67e22)',
-    'linear-gradient(45deg, #1abc9c, #16a085)',
-    'linear-gradient(45deg, #9b59b6, #8e44ad)'
-];
-?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SKEMA - Platform Film Indonesia</title>
+    <title>SKEMA - Movie Platform</title>
     <link rel="stylesheet" href="home.css">
 </head>
 <body>
@@ -45,47 +13,80 @@ $gradients = [
         <nav class="nav">
             <a href="#home">Home</a>
             <a href="#about">About us</a>
-            <a href="../profile/profile.php">Profile</a>
+            <a href="#profile">Profile</a>
         </nav>
     </header>
 
     <!-- Hero Section -->
-    <section class="hero" id="home">
+    <section class="hero">
         <div class="hero-content">
-            <div class="hero-poster">
-                <div class="title"><?php echo $featured_movie['title']; ?></div>
+            <div class="hero-image">
+                <img src="image/lawat.png" alt="Lawat Movie">
             </div>
-            <div class="hero-info">
-                <h1><?php echo $featured_movie['title']; ?></h1>
-                <p><?php echo $featured_movie['description']; ?></p>
-                <button class="btn-detail" onclick="showDetail('<?php echo $featured_movie['title']; ?>')">
-                    Lihat Detail
-                </button>
+            <div class="hero-text">
+                <h2>Lawat</h2>
+                <p>Pak Wayan yang merupakan seorang dalang wayang kulit yang ingin anaknya, melestarikan wayang. Namun, Agus lebih memilih musik modern, menyebabkan konflik dan pertengkaran terjadi</p>
+                <button class="btn-detail">Lihat Detail</button>
             </div>
         </div>
     </section>
 
-    <!-- Search Section -->
-    <section class="search-section">
-        <div class="search-container">
-            <h2 class="section-title">Hot this month</h2>
-            <div class="search-box">
-                <input type="text" placeholder="Search movie" id="searchInput">
-                <button class="search-btn" onclick="searchMovie()">🔍</button>
-            </div>
-        </div>
-    </section>
+    <!-- Hot This Month Section -->
+       <section class="hot-section">
+  <div class="container">
+    <div class="section-header">
+      <h3>Hot this month</h3>
+      <div class="search-container">
+        <input type="text" class="search-box" placeholder="Search movie">
+        <button class="search-btn"><img src="icon-search.png" alt="Search"></button>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Movies Grid -->
-    <section class="movies-section">
-        <div class="movies-container">
-            <div class="movies-grid" id="moviesGrid">
-                <?php foreach ($hot_movies as $index => $movie): ?>
-                    <div class="movie-card" onclick="showDetail('<?php echo $movie['title']; ?>')">
-                        <div class="movie-poster" style="background: <?php echo $gradients[$index]; ?>">
-                            <span style="z-index: 2;"><?php echo $movie['title']; ?></span>
-                        </div>
-                        <div class="movie-title"><?php echo $movie['title']; ?></div>
+     <hr class="section-line">
+
+            <div class="movies-grid">
+                <?php
+                $movies = [
+                    [
+                        'title' => 'Lawat',
+                        'image' => 'image/lawat.png'
+                    ],
+                    [
+                        'title' => 'Clarity',
+                        'image' => 'image/clarity.png'
+                    ],
+                    [
+                        'title' => 'Suara Lukisan',
+                        'image' => 'image/suaralukisan.png'
+                    ],
+                    [
+                        'title' => 'Harapan Harmoni',
+                        'image' => 'image/harapanharmony.png'
+                    ],
+                    [
+                        'title' => 'Pulang Sekolah',
+                        'image' => 'image/pulangsekolah.png'
+                    ],
+                    [
+                        'title' => 'Terehan',
+                        'image' => 'image/terehan.png'
+                    ],
+                    [
+                        'title' => 'Lensa Kanvas',
+                        'image' => 'image/lensakanvas.png'
+                    ],
+                    [
+                        'title' => 'Bukumu Kala Itu',
+                        'image' => 'image/bukumukalaitu.png'
+                    ]
+                ];
+
+                foreach($movies as $movie): ?>
+                    <div class="movie-card">
+                        <img src="<?php echo $movie['image']; ?>" alt="<?php echo $movie['title']; ?>">
+                        <h4><?php echo $movie['title']; ?></h4>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -94,17 +95,23 @@ $gradients = [
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-logo">SKE<span class="red">M</span>A</div>
-            <div class="footer-info">
-                <p>Dibuat oleh SKEMA Team</p>
-                <p>©Rekomendasi Film Skensa</p>
-                <p><strong>Contact Us:</strong></p>
-                <p>skema183032@gmail.com</p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>SKE<span>MA</span></h2>
+                </div>
+                <div class="footer-info">
+                    <div class="footer-text">
+                        <p>Dibuat oleh SKEMA Team</p>
+                        <p>©Rekomendasi Film Skensa</p>
+                    </div>
+                    <div class="contact-info">
+                        <p>Contact Us:</p>
+                        <p>skema18302@gmail.com</p>
+                    </div>
+                </div>
             </div>
         </div>
     </footer>
-
-    <script src="script.js"></script>
 </body>
 </html>
