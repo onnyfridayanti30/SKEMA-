@@ -44,7 +44,7 @@
       <h3>Hot this month</h3>
       <div class="search-container">
         <input type="text" class="search-box" placeholder="Search movie">
-        <button class="search-btn"><img src="icon-search.png" alt="Search"></button>
+        <button class="search-btn"><img src="image/ikon.png" alt="Search"></button>
       </div>
     </div>
   </div>

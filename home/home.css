@@ -15,14 +15,14 @@ body {
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    
 }
 
 /* Header */
 .header {
-    background-color: #0f0f0f;
+    
     padding: 1rem 0;
-    position: fixed;
+    background-color: #0f0f0f;
     top: 0;
     width: 100%;
     z-index: 1000;
@@ -39,7 +39,6 @@ body {
             font-size: 48px;
             font-weight: 700;
             color: white;
-            margin-bottom: 150px;
             letter-spacing: 8px;
         }
 
@@ -213,7 +212,7 @@ body {
     border-radius: 50%;
     cursor: pointer;
     font-size: 1rem;
-    transition: background-color 0.3s ease;
+    
 }
 
 .search-btn img {
@@ -222,9 +221,7 @@ body {
     
 }
 
-.search-btn:hover {
-    background-color: #d8050500;
-}
+
 
 .section-line {
     border: none;
@@ -298,7 +295,7 @@ body {
 
 .footer-info {
     display: flex;
-    gap: 3rem;
+    gap:19rem;
     align-items: center;
 }
 
@@ -313,6 +310,7 @@ body {
     color: #ffffff;
     font-weight: 600;
 }
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
