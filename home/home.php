@@ -38,8 +38,8 @@
     </section>
 
     <!-- Hot This Month Section -->
-       <section class="hot-section">
-  <div class="container">
+<section class="hot-section">
+  <div class="container-hot-section">
     <div class="section-header">
       <h3>Hot this month</h3>
       <div class="search-container">
