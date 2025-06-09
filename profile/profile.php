@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+// Cek apakah user sudah login
 if (!isset($_SESSION["user_id"])) {
     header("Location: ../login/login.php");
     exit();
@@ -14,19 +15,22 @@ if ($conn->connect_error) {
 
 $user_id = $_SESSION["user_id"];
 
-// Ambil data user
+// Ambil data user dari database
 $stmt = $conn->prepare("SELECT username, email, profile_image FROM users WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
-$stmt->bind_result($username, $email, $profileImage);
+$stmt->bind_result($username, $email, $profile_image);
 $stmt->fetch();
 $stmt->close();
 $conn->close();
 
-// Gambar default jika tidak ada
-if (empty($profileImage)) {
-    $profileImage = "./img/default.jpg";
+// Cek apakah profile_image valid dan file-nya ada
+if (!empty($profile_image) && file_exists("../uploads/profile_pictures/" . $profile_image)) {
+    $profile_image_path = "../uploads/profile_pictures/" . $profile_image;
+} else {
+    $profile_image_path = "img/default.jpg";
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -38,52 +42,7 @@ if (empty($profileImage)) {
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="profile.css" />
-  <style>
-    .profile-image {
-      width: 170px;
-      height: 170px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-    .popup-form {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-      z-index: 999;
-    }
-    .popup-form input {
-      display: block;
-      width: 100%;
-      margin-bottom: 10px;
-      padding: 8px;
-    }
-    .popup-form button {
-      padding: 10px;
-    }
-    .overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      display: none;
-      z-index: 998;
-    }
-    .delete-photo-btn {
-      margin-top: 10px;
-      background: #e53935;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-  </style>
+  
 </head>
 
 <body>
@@ -97,16 +56,40 @@ if (empty($profileImage)) {
   <div class="container">
     <!-- Sidebar -->
     <div class="sidebar">
-      <h2>User Profile</h2>
-      <div class="sidebar-item active"><i class='bx bx-user'></i> User Info</div>
-      <div class="sidebar-item"><i class='bx bx-heart'></i><a href="favorites.php">Favorites</a ></div>
-      <div class="sidebar-item logout-item"><i class='bx bx-log-out'></i> <a href="../login&register/login.php">Log Out</a></div>
-    </div>
+            <h2>User Profile</h2>
+
+            <div class="sidebar-item active">
+              <a href="profile.php">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="35" viewBox="0 0 24 24">
+                  <path fill="#421720" d="M12 12.25a3.75 3.75 0 1 1 3.75-3.75A3.75 3.75 0 0 1 12 12.25m0-6a2.25 2.25 0 1 0 2.25 2.25A2.25 2.25 0 0 0 12 6.25m7 13a.76.76 0 0 1-.75-.75c0-1.95-1.06-3.25-6.25-3.25s-6.25 1.3-6.25 3.25a.75.75 0 0 1-1.5 0c0-4.75 5.43-4.75 7.75-4.75s7.75 0 7.75 4.75a.76.76 0 0 1-.75.75" />
+                </svg>
+                <span>User Info</span>
+              </a>
+            </div>
+
+            <div class="sidebar-item favorites-item">
+              <a href="favorites.php">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
+                  <path fill="none" stroke="#421720" stroke-width="1.5" d="m4.45 13.908l6.953 6.531c.24.225.36.338.5.366a.5.5 0 0 0 .193 0c.142-.028.261-.14.5-.366l6.953-6.53a5.203 5.203 0 0 0 .549-6.983l-.31-.399c-1.968-2.536-5.918-2.111-7.301.787a.54.54 0 0 1-.974 0C10.13 4.416 6.18 3.99 4.212 6.527l-.31.4a5.203 5.203 0 0 0 .549 6.981Z"/>
+                </svg>
+                <span>Favorites</span>
+              </a>
+            </div>
+
+            <div class="sidebar-item logout-item">
+              <a href="../login&register/login.php">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
+                  <path fill="none" stroke="#421720" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.496 21H6.5c-1.105 0-2-1.151-2-2.571V5.57c0-1.419.895-2.57 2-2.57h7M16 15.5l3.5-3.5L16 8.5m-6.5 3.496h10"/>
+                </svg>
+                <span>Log Out</span>
+              </a>
+            </div>
+          </div>
 
     <!-- Main Content -->
     <div class="main-content"> 
       <div class="profile-header">
-        <img id="profilePreview" src="<?= htmlspecialchars($profileImage) ?>" alt="Profile" class="profile-image" />
+        <img src="<?= htmlspecialchars($profile_image_path) ?>" alt="Profile Picture" class="profile-image">
         <div class="profile-info">
           <h1>ACCOUNT</h1>
           <p>Edit your name, password, email, image</p>

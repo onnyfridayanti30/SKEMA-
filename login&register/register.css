@@ -105,7 +105,7 @@
         }
 
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 55px;
         }
 
         .form-group label {
@@ -141,7 +141,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
 
         .checkbox-group {
@@ -176,7 +176,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
-            margin-bottom: 20px;
+            margin-bottom: 60px;
         }
 
         .login-btn:hover {

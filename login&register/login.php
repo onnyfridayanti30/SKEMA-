@@ -16,24 +16,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($username) || empty($password)) {
         $error_message = "Username dan password wajib diisi.";
     } else {
-        // Cek user berdasarkan username
-        $stmt = $conn->prepare("SELECT id, username, email, password, role FROM users WHERE username = ?");
+        // Ambil data user dari database
+        $stmt = $conn->prepare("SELECT id, username, email, password, role, profile_image FROM users WHERE username = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $stmt->store_result();
 
         if ($stmt->num_rows === 1) {
-            $stmt->bind_result($id, $db_username, $email, $hashed_password, $role);
+            $stmt->bind_result($id, $db_username, $email, $hashed_password, $role, $profile_image);
             $stmt->fetch();
 
             if (password_verify($password, $hashed_password)) {
-                // Simpan data ke session
+                // Simpan ke session
                 $_SESSION["user_id"] = $id;
                 $_SESSION["username"] = $db_username;
                 $_SESSION["email"] = $email;
                 $_SESSION["role"] = $role;
+                $_SESSION["profile_image"] = $profile_image; // simpan foto profil
 
-                // Arahkan ke homepage
+                // Arahkan ke halaman home
                 header("Location: ../home/home.php");
                 exit();
             } else {
@@ -48,6 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $conn->close();
 }
+?>
 ?>
 
 
@@ -99,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <input type="checkbox" id="remember_me" name="remember_me">
                         <label for="remember_me">Remember Me</label>
                     </div>
-                    <a href="#" class="forgot-password">Forget Password</a>
+                    
                 </div>
                 
                 <button type="submit" class="login-btn">Sign In</button>

@@ -55,6 +55,7 @@
       margin-right: auto;
       background: #421720;
       border-radius: 15px;
+      height: 650px;
       overflow: hidden;
       flex-wrap: wrap;
     }
@@ -62,50 +63,55 @@
     .sidebar {
       background: white;
       width: 250px;
-      min-height: 100%;
-      padding: 30px;
+      min-height: 100vh;
+      text-align: left;
       color: #333;
       display: flex;
       flex-direction: column;
-      flex-shrink: 0;
+      padding: 25px 30px 20px; /* kurangi padding atas dari 20px ke 10px */
+      box-sizing: border-box;
     }
 
     .sidebar h2 {
-      font-size: 20px;
+      font-size: 25px;
       font-weight: 700;
-      margin-bottom: 30px;
+      margin: 0 0 25px 0; /* hapus margin atas, tambahkan bawah */
       color: #421720;
+      text-align: center;
     }
+
 
     .sidebar-item {
+      margin-bottom: 20px;
+    }
+
+    .sidebar-item a {
       display: flex;
       align-items: center;
-      padding: 15px 0;
-      color: #666;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-weight: 500;
+      text-decoration: none;
+      font-weight: 700;
+      color: #421720;
+      gap: 10px;
+      transition: background 0.2s ease;
+      padding: 10px 15px;
+      border-radius: 10px;
     }
 
-    .sidebar-item i {
-      margin-right: 10px;
+    .sidebar-item a:hover {
+      background-color: #f9f1f1;
     }
 
-    .sidebar-item:hover {
-      background: #f5f5f5;
-      padding-left: 10px;
+    .sidebar-item.active a {
+      background-color: #ffecf1;
     }
 
-    .sidebar-item.active {
-      background: #f0f0f0;
-      color: #333;
-      border-right: 3px solid #FF6B9D;
+    .sidebar-item svg {
+      flex-shrink: 0;
     }
 
     .logout-item {
-      margin-top: auto;
+      margin-top: 320px;
       padding-top: 20px;
-      border-top: 1px solid #eee;
     }
 
     .main-content {
@@ -162,6 +168,101 @@
 
     .update-btn:hover {
       background: #f0f0f0;
+    }
+
+    .profile-image {
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+/* Overlay background */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none; /* Tampilkan via JS */
+  z-index: 99;
+}
+
+/* Popup container */
+.popup-form {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 30px 25px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 400px;
+  z-index: 100;
+  display: none; /* Tampilkan via JS */
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Judul */
+.popup-form h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 22px;
+  color: #421720;
+  text-align: center;
+}
+
+/* Input dan file upload */
+.popup-form input[type="text"],
+.popup-form input[type="email"],
+.popup-form input[type="password"],
+.popup-form input[type="file"] {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* Preview image */
+.popup-form img#previewImage {
+  display: block;
+  margin: 10px auto 0;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+/* Submit button */
+.popup-form button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  background-color: #421720;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.popup-form button[type="submit"]:hover {
+  background-color: #5a2b2d;
+}
+    .delete-photo-btn {
+ padding-left: 60px;
+      background: white;
+      color: #421720;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
     }
 
     .profile-fields {
