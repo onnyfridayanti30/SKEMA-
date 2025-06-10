@@ -51,7 +51,7 @@ while ($row = $film_terbaru_result->fetch_assoc()) {
             </div>
 
             <div class="sidebar-item film-item">
-              <a href="fim.php">
+              <a href="film.php">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><g fill="none" stroke="#421720" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"><rect width="18" height="18" x="3" y="3" rx="2"/>
                   <path d="M7 3v18M3 7.5h4M3 12h18M3 16.5h4M17 3v18m0-13.5h4m-4 9h4"/></g>
                 </svg>
@@ -107,7 +107,7 @@ while ($row = $film_terbaru_result->fetch_assoc()) {
           <?php foreach ($film_terbaru as $film): ?>
             <div class="film-item" style="display: flex; align-items: center; margin-bottom: 15px;">
               <div class="film-poster" style="margin-right: 15px;">
-                <img src="../home/image/<?= htmlspecialchars($film['poster']) ?>" alt="<?= htmlspecialchars($film['judul']) ?>" >
+                <img src="../home/uploads/poster/<?= htmlspecialchars($film['poster']) ?>" alt="<?= htmlspecialchars($film['judul']) ?>" >
               </div>
               <div class="film-info">
                 <h4><?= htmlspecialchars($film['judul']) ?></h4>

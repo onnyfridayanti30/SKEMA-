@@ -27,7 +27,7 @@
     <section class="hero">
         <div class="hero-content">
             <div class="hero-image">
-                <img src="image/lawat.png" alt="Lawat Movie">
+                <img src="./uploads/gambar/lawat.png" alt="Lawat Movie">
             </div>
             <div class="hero-text">
                 <h2>Lawat</h2>
@@ -60,7 +60,7 @@
         ?>
             <div class="movie-card">
                 <a href="detail.php?id=<?php echo $movie['id_film']; ?>">
-                    <img src="./image/<?php echo htmlspecialchars($movie['poster']); ?>" alt="<?php echo htmlspecialchars($movie['judul']); ?>">
+                    <img src="./uploads/poster/<?php echo htmlspecialchars($movie['poster']); ?>" alt="<?php echo htmlspecialchars($movie['judul']); ?>">
                     <h4><?php echo htmlspecialchars($movie['judul']); ?></h4>
                 </a>
             </div>

@@ -156,12 +156,12 @@ if ($id_film) {
 
 <div class="header">
     <a href="../home/home.php" class="back-button"><i class="fas fa-arrow-left"></i></a>
-    <img src="../home/image/<?php echo htmlspecialchars($data['poster'] ?? 'default.jpg'); ?>">
+    <img src="./uploads/poster/<?php echo htmlspecialchars($data['poster'] ?? 'default.jpg'); ?>">
 </div>
 
 <div class="content">
     <div class="left-column">
-        <img class="portrait" src="../home/image/<?php echo htmlspecialchars($data['gambar'] ?? 'default.jpg'); ?>" >
+        <img class="portrait" src="./uploads/gambar/<?php echo htmlspecialchars($data['gambar'] ?? 'default.jpg'); ?>" >
         <div class="button-group">
             <a href="<?php echo htmlspecialchars($data['link'] ?? '#'); ?>" class="watch-button" target="_blank">▶ Watch Now</a>
             <form method="POST" action="../profile/add_favorite.php">

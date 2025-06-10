@@ -50,19 +50,25 @@ while ($row = $result->fetch_assoc()) {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SKEMA - Favorites</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Rammetto+One&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="favorites.css">
 </head>
 <body>
 
 <div class="header">
     <div class="logo">SKE<span class="m">MA</span></div>
+    <button class="menu-toggle" onclick="toggleSidebar()">☰ Menu</button>
     <a href="../home/home.php"><button class="home-btn">Home</button></a>
 </div>
 
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
 <div class="container">
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
+        <button class="close-sidebar" onclick="closeSidebar()">✕</button>
         <h2>User Profile</h2>
 
         <div class="sidebar-item active">
@@ -104,28 +110,78 @@ while ($row = $result->fetch_assoc()) {
 
         <h3 class="fav-title">Favorites</h3>
         <hr>
-
         <div class="favorites-carousel">
             <?php if (!empty($favorites)) : ?>
                 <?php foreach ($favorites as $film) : ?>
                     <div class="favorite-item">
                         <a href="../home/detail.php?id=<?= $film['id_film'] ?>">
-                            <img src="../home/image/<?= htmlspecialchars($film['gambar']) ?>" alt="<?= htmlspecialchars($film['judul']) ?>">
+                            <img src="../home/uploads/gambar/<?= htmlspecialchars($film['gambar']) ?>" alt="<?= htmlspecialchars($film['judul']) ?>">
                             <p><?= htmlspecialchars($film['judul']) ?></p>
                         </a>
                     </div>
                 <?php endforeach; ?>
             <?php else : ?>
-                <p style="color:white;">Belum ada film favorit yang ditambahkan.</p>
+                <div class="no-favorites">
+                    <p>Belum ada film favorit yang ditambahkan.</p>
+                </div>
             <?php endif; ?>
-        </div>
-
-        <div class="carousel-dots">
-            <span class="dot active"></span>
-            <span class="dot"></span>
         </div>
     </div>
 </div>
+
+<script>
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    
+    sidebar.classList.toggle('active');
+    overlay.classList.toggle('active');
+}
+
+function closeSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    
+    sidebar.classList.remove('active');
+    overlay.classList.remove('active');
+}
+
+// Close sidebar when clicking on sidebar links
+document.querySelectorAll('.sidebar-item a').forEach(link => {
+    link.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            closeSidebar();
+        }
+    });
+});
+
+// Handle window resize
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+        closeSidebar();
+    }
+});
+
+// Prevent body scroll when sidebar is open
+document.addEventListener('DOMContentLoaded', function() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                if (sidebar.classList.contains('active')) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            }
+        });
+    });
+    
+    observer.observe(sidebar, { attributes: true });
+});
+</script>
 
 </body>
 </html>
