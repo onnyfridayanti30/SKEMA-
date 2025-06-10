@@ -12,7 +12,7 @@
     <!-- Header -->
     <header class="header">
         <div class="container">
-             <div class="logo">
+            <div class="logo">
                 SKE<span class="m">MA</span>
             </div>
             <nav class="nav">
@@ -27,7 +27,7 @@
     <section class="hero">
         <div class="hero-content">
             <div class="hero-image">
-                <img src="image/lawat.png" alt="Lawat Movie">
+                <img src="./uploads/gambar/lawat.png" alt="Lawat Movie">
             </div>
             <div class="hero-text">
                 <h2>Lawat</h2>
@@ -38,66 +38,34 @@
     </section>
 
     <!-- Hot This Month Section -->
-<section class="hot-section">
-  <div class="container-hot-section">
-    <div class="section-header">
-      <h3>Hot this month</h3>
-      <div class="search-container">
-        <input type="text" class="search-box" placeholder="Search movie">
-        <button class="search-btn"><img src="image/ikon.png" alt="Search"></button>
-      </div>
-    </div>
-  </div>
-</section>
-
-     <hr class="section-line">
-
-            <div class="movies-grid">
-                <?php
-                $movies = [
-                    [
-                        'title' => 'Lawat',
-                        'image' => 'image/lawat.png'
-                    ],
-                    [
-                        'title' => 'Clarity',
-                        'image' => 'image/clarity.png'
-                    ],
-                    [
-                        'title' => 'Suara Lukisan',
-                        'image' => 'image/suaralukisan.png'
-                    ],
-                    [
-                        'title' => 'Harapan Harmoni',
-                        'image' => 'image/harapanharmony.png'
-                    ],
-                    [
-                        'title' => 'Pulang Sekolah',
-                        'image' => 'image/pulangsekolah.png'
-                    ],
-                    [
-                        'title' => 'Terehan',
-                        'image' => 'image/terehan.png'
-                    ],
-                    [
-                        'title' => 'Lensa Kanvas',
-                        'image' => 'image/lensakanvas.png'
-                    ],
-                    [
-                        'title' => 'Bukumu Kala Itu',
-                        'image' => 'image/bukumukalaitu.png'
-                    ]
-                ];
-
-                foreach($movies as $movie): ?>
-                    <div class="movie-card">
-                        <img src="<?php echo $movie['image']; ?>" alt="<?php echo $movie['title']; ?>">
-                        <h4><?php echo $movie['title']; ?></h4>
-                    </div>
-                <?php endforeach; ?>
+    <section class="hot-section">
+        <div class="container-hot-section">
+            <div class="section-header">
+                <h3>Hot this month</h3>
+             
             </div>
         </div>
     </section>
+
+    <hr class="section-line">
+
+    <!-- Movies Grid -->
+    <div class="movies-grid">
+        <?php
+        include 'koneksi.php'; // pastikan file koneksi.php berisi koneksi ke MySQL
+
+        $query = mysqli_query($conn, "SELECT * FROM detail");
+
+        while ($movie = mysqli_fetch_assoc($query)) :
+        ?>
+            <div class="movie-card">
+                <a href="detail.php?id=<?php echo $movie['id_film']; ?>">
+                    <img src="./uploads/poster/<?php echo htmlspecialchars($movie['poster']); ?>" alt="<?php echo htmlspecialchars($movie['judul']); ?>">
+                    <h4><?php echo htmlspecialchars($movie['judul']); ?></h4>
+                </a>
+            </div>
+        <?php endwhile; ?>
+    </div>
 
     <!-- Footer -->
     <footer class="footer">

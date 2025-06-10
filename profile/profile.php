@@ -16,13 +16,9 @@ if ($conn->connect_error) {
 $user_id = $_SESSION["user_id"];
 
 // Ambil data user dari database
-$stmt = $conn->prepare("SELECT username, email, profile_image FROM users WHERE id = ?");
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$stmt->bind_result($username, $email, $profile_image);
-$stmt->fetch();
-$stmt->close();
-$conn->close();
+$username = $_SESSION['username'];
+$email = $_SESSION['email'];
+$profile_image = $_SESSION['profile_image'] ?? '';
 
 // Cek apakah profile_image valid dan file-nya ada
 if (!empty($profile_image) && file_exists("../uploads/profile_pictures/" . $profile_image)) {
