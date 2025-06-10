@@ -1,3 +1,28 @@
+<?php
+include 'koneksi.php';
+session_start();
+
+// Cek apakah user login dan merupakan admin
+if (!isset($_SESSION["user_id"]) || $_SESSION["role"] !== 'admin') {
+  header("Location: ../login&register/login.php");
+  exit;
+}
+
+// Query jumlah film
+$total_film_result = $conn->query("SELECT COUNT(*) AS total FROM detail");
+$total_film = $total_film_result->fetch_assoc()['total'];
+
+// Query jumlah user
+$total_user_result = $conn->query("SELECT COUNT(*) AS total FROM users WHERE role = 'user'");
+$total_user = $total_user_result->fetch_assoc()['total'];
+
+// Query 5 film terbaru
+$film_terbaru_result = $conn->query("SELECT * FROM detail ORDER BY created_at DESC LIMIT 2");
+$film_terbaru = [];
+while ($row = $film_terbaru_result->fetch_assoc()) {
+    $film_terbaru[] = $row;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,18 +32,14 @@
   <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
-
-
 <div class="header">
     <div class="logo">SKE<span class="m">MA</span></div>
-    <a href="../home/home.php"><button class="home-btn">Home</button></a>
 </div>
-   
 
 <div class="container">
 
-          <div class="sidebar">
-            <h2>User Profile</h2>
+<div class="sidebar">
+            <h2>Admin Profile</h2>
 
             <div class="sidebar-item dashboard-item ">
               <a href="profile.php">
@@ -57,59 +78,52 @@
             </div>
           </div>
 
-          
-        <div class="main-content">
-            <div class="welcome-user">
-                <div class="dashboard-header">
-                    <h2 class="dashboard-title">DASHBOARD</h2>
-                    <div class="welcome-card">
-                        <div class="welcome-text">Welcome Back!!</div>
-                        <div class="admin-name">Admin onny</div>
-                    </div>
-                 </div>
-
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-number">80</div>
-                        <div class="stat-label">Total Film</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">1,100</div>
-                        <div class="stat-label">Users</div>
-                    </div>
-                </div>
-            </div>
-
-
-
-            <div class="film-section">
-                <div class="film-latest">
-                    <div class="section-title">Film Terbaru</div>
-                    <div class="film-list">
-                        <div class="film-item">
-                            <div class="film-poster">SUARA LUKISAN</div>
-                            <div class="film-info">
-                                <h4>Suara Lukisan</h4>
-                                <p>• Ditambahkan 2 hari yang lalu</p>
-                            </div>
-                        </div>
-                        <div class="film-item">
-                            <div class="film-poster">SUARA LUKISAN</div>
-                            <div class="film-info">
-                                <h4>Suara Lukisan</h4>
-                                <p>• Ditambahkan 2 hari yang lalu</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="film-count-card">
-                    <div class="big-number">8</div>
-                    <div class="count-label">Film Terbaru<br>Bulan Ini</div>
-                </div>
-            </div>
+  <div class="main-content">
+    <div class="welcome-user">
+      <div class="dashboard-header">
+        <h2 class="dashboard-title">DASHBOARD</h2>
+        <div class="welcome-card">
+          <div class="welcome-text">Welcome Back!!</div>
+          <div class="admin-name">Admin <?= htmlspecialchars($_SESSION["username"]) ?></div>
         </div>
-</div>
+      </div>
 
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number"><?= $total_film ?></div>
+          <div class="stat-label">Total Film</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number"><?= number_format($total_user, 0, ',', '.') ?></div>
+          <div class="stat-label">Users</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="film-section">
+      <div class="film-latest">
+        <div class="section-title">Film Terbaru</div>
+        <div class="film-list">
+          <?php foreach ($film_terbaru as $film): ?>
+            <div class="film-item" style="display: flex; align-items: center; margin-bottom: 15px;">
+              <div class="film-poster" style="margin-right: 15px;">
+                <img src="../home/image/<?= htmlspecialchars($film['poster']) ?>" alt="<?= htmlspecialchars($film['judul']) ?>" >
+              </div>
+              <div class="film-info">
+                <h4><?= htmlspecialchars($film['judul']) ?></h4>
+                <p>• Ditambahkan <?= date("d F Y", strtotime($film['created_at'])) ?></p>
+              </div>
+            </div>
+          <?php endforeach; ?>
+        </div>
+      </div>
+
+      <div class="film-count-card">
+        <div class="big-number"><?= count($film_terbaru) ?></div>
+        <div class="count-label">Film Terbaru<br>Bulan Ini</div>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

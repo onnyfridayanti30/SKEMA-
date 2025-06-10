@@ -1,62 +1,72 @@
 <?php
 session_start();
-if (!isset($_SESSION["user_id"])) {
-    header("Location: ../login/login.php");
-    exit();
-}
+require_once 'koneksi.php';
 
-$conn = new mysqli("localhost", "root", "", "skema_nyoba");
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
-
-$user_id = $_SESSION["user_id"];
+$userId = $_SESSION['user_id'];
 $username = $_POST['username'];
 $email = $_POST['email'];
-$password = $_POST['password'];
+$newPassword = $_POST['password'];
+$newProfilePicture = null;
 
-$updateQuery = "UPDATE users SET username = ?, email = ?";
+// Handle upload foto profil
+if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === UPLOAD_ERR_OK) {
+    $fileTmpPath = $_FILES['profile_image']['tmp_name'];
+    $fileName = $_FILES['profile_image']['name'];
+        $fileType = $_FILES['profile_image']['type'];
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+    if (!in_array($fileType, $allowedTypes)) {
+        die("Tipe file tidak diperbolehkan. Hanya JPG, PNG, atau WEBP.");
+    }
+
+    $destPath = '../uploads/profile_pictures/' . $fileName;
+
+    move_uploaded_file($fileTmpPath, $destPath);
+    $newProfilePicture = $fileName;
+
+    if (move_uploaded_file($fileTmpPath, $destPath)) {
+    // Hapus foto lama jika ada
+    if (!empty($_SESSION['profile_image'])) {
+        $oldPath = '../uploads/profile_pictures/' . $_SESSION['profile_image'];
+        if (file_exists($oldPath)) {
+            unlink($oldPath);
+        }
+    }
+    $newProfilePicture = $fileName;
+}
+
+}
+
+// Buat query UPDATE
+$query = "UPDATE users SET username = ?, email = ?";
 $params = [$username, $email];
-$types = "ss";
 
-// Hash password jika diisi
-if (!empty($password)) {
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $updateQuery .= ", password = ?";
-    $types .= "s";
+if (!empty($newPassword)) {
+    $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+    $query .= ", password = ?";
     $params[] = $hashedPassword;
 }
 
-// Upload foto profil
-if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] === 0) {
-    $uploadDir = "../uploads/profile_pictures/";
-    $newFileName = uniqid() . "_" . basename($_FILES['profile_image']['name']);
-    $targetPath = $uploadDir . $newFileName;
-
-    // Pastikan folder tujuan ada
-    if (!is_dir($uploadDir)) {
-        mkdir($uploadDir, 0755, true);
-    }
-
-    if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $targetPath)) {
-        $updateQuery .= ", profile_image = ?";
-        $types .= "s";
-        $params[] = $newFileName; // hanya nama file, tidak pakai path
-    }
+if ($newProfilePicture !== null) {
+    $query .= ", profile_image = ?";
+    $params[] = $newProfilePicture;
 }
 
-// Tambahkan kondisi WHERE
-$updateQuery .= " WHERE id = ?";
-$types .= "i";
-$params[] = $user_id;
+$query .= " WHERE id = ?";
+$params[] = $userId;
 
 // Eksekusi query
-$stmt = $conn->prepare($updateQuery);
-$stmt->bind_param($types, ...$params);
-$stmt->execute();
-$stmt->close();
+$stmt = $conn->prepare($query);
+if ($stmt->execute($params)) {
+    // ✅ UPDATE session setelah data berhasil diubah
+    $_SESSION['username'] = $username;
+    $_SESSION['email'] = $email;
+    if ($newProfilePicture !== null) {
+        $_SESSION['profile_image'] = $newProfilePicture;
+    }
 
-$conn->close();
-header("Location: profile.php");
-exit();
+    header("Location: profile.php?success=1");
+    exit;
+} else {
+    echo "Gagal update data.";
+}
 ?>

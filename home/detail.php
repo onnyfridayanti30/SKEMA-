@@ -1,29 +1,33 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+include 'koneksidetail.php';
 
-include 'koneksi.php';
+$id_film = $_GET['id'] ?? null;
 
-// Query berdasarkan ID atau ambil data pertama
-$id = isset($_GET['id']) ? (int)$_GET['id'] : 7;
-$query = mysqli_query($conn, "SELECT * FROM detail WHERE id_film = $id LIMIT 1");
-if (!$query) {
-    die("Query error: " . mysqli_error($conn));
-}
+if ($id_film) {
+    $query = "SELECT * FROM detail WHERE id_film = ?";
+    $stmt = $koneksi->prepare($query);
+    $stmt->bind_param("i", $id_film);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
 
-$data = mysqli_fetch_assoc($query);
-if (!$data) {
-    die("Data tidak ditemukan di tabel film.");
+    if (!$data) {
+        echo "Data dengan ID $id_film tidak ditemukan di database.";
+        exit;
+    }
+} else {
+    echo "ID tidak ditemukan di URL.";
+    exit;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Detail Film - <?php echo htmlspecialchars($data['judul_film'] ?? 'Film'); ?></title>
+    <title>Detail Film - </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <style>
         html, body {
             margin: 0;
@@ -49,8 +53,6 @@ if (!$data) {
             left: 17px;
             color: #fff;
             font-size: 20px;
-            
-           
             cursor: pointer;
             text-decoration: none;
         }
@@ -109,14 +111,12 @@ if (!$data) {
         .love-circle:hover {
             background-color: #c62828;
         }
-
         .love-circle.loved {
             color: #fff !important;
         }
-
         .love-circle.loved:hover {
-    color: #fff !important;
-}
+            color: #fff !important;
+        }
         .text-content {
             flex: 1;
             min-width: 250px;
@@ -130,89 +130,54 @@ if (!$data) {
             font-size: 36px;
             margin-top: 20px;
             display: block;
-            color:rgb(255, 255, 255);
+            color: rgb(255, 255, 255);
         }
-        
-        
-       /* Responsive design */
-@media (max-width: 1024px) {
-    .header img {
-        height: 350px;
-    }
-}
-
-@media (max-width: 768px) {
-    .header img {
-        height: 250px;
-    }
-    .content {
-        flex-direction: column;
-        align-items: center;
-    }
-    .portrait {
-        width: 300px;
-        height: 400px;
-    }
-    .watch-button {
-        padding: 10px 50px;
-        font-size: 18px;
-    }
-    .text-content p {
-        font-size: 16px;
-    }
-    .text-content strong {
-        font-size: 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .header img {
-        height: 200px;
-    }
-    .portrait {
-        width: 250px;
-        height: 350px;
-    }
-    .watch-button {
-        padding: 8px 30px;
-        font-size: 16px;
-    }
-    .text-content p {
-        font-size: 14px;
-    }
-    .text-content strong {
-        font-size: 18px;
-    }
-}
+        @media (max-width: 1024px) {
+            .header img { height: 350px; }
+        }
+        @media (max-width: 768px) {
+            .header img { height: 250px; }
+            .content { flex-direction: column; align-items: center; }
+            .portrait { width: 300px; height: 400px; }
+            .watch-button { padding: 10px 50px; font-size: 18px; }
+            .text-content p { font-size: 16px; }
+            .text-content strong { font-size: 20px; }
+        }
+        @media (max-width: 480px) {
+            .header img { height: 200px; }
+            .portrait { width: 250px; height: 350px; }
+            .watch-button { padding: 8px 30px; font-size: 16px; }
+            .text-content p { font-size: 14px; }
+            .text-content strong { font-size: 18px; }
+        }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <a href="index.php" class="back-button"><i class="fas fa-arrow-left"></i></a>
-    <img src="Foto Film/<?php echo htmlspecialchars($data['poster'] ?? 'default.jpg'); ?>" alt="<?php echo htmlspecialchars($data['judul_film'] ?? 'Film'); ?>">
+    <a href="../home/home.php" class="back-button"><i class="fas fa-arrow-left"></i></a>
+    <img src="../home/image/<?php echo htmlspecialchars($data['poster'] ?? 'default.jpg'); ?>">
 </div>
 
 <div class="content">
     <div class="left-column">
-        <img class="portrait" src="Foto Film/<?php echo htmlspecialchars($data['gambar'] ?? 'default.jpg'); ?>" alt="<?php echo htmlspecialchars($data['judul_film'] ?? 'Film'); ?>">
+        <img class="portrait" src="../home/image/<?php echo htmlspecialchars($data['gambar'] ?? 'default.jpg'); ?>" >
         <div class="button-group">
             <a href="<?php echo htmlspecialchars($data['link'] ?? '#'); ?>" class="watch-button" target="_blank">▶ Watch Now</a>
-            <span class="love-circle"><i class="fas fa-heart"></i></span>
+            <form method="POST" action="../profile/add_favorite.php">
+                 <input type="hidden" name="detail_id" value="<?= $id_film ?>">
+                  <button type="submit" class="love-circle"><i class="fas fa-heart"></i></button>
+            </form>
+
         </div>
     </div>
 
     <div class="text-content">
-        
-         
         <p><?php echo htmlspecialchars($data['sinopsis'] ?? 'Sinopsis tidak tersedia'); ?></p>
-        
         <strong>Actor:</strong>
         <p><?php echo htmlspecialchars($data['actor'] ?? 'Informasi actor tidak tersedia'); ?></p>
-        
         <strong>Director:</strong>
         <p><?php echo htmlspecialchars($data['direktor'] ?? 'Informasi director tidak tersedia'); ?></p>
-        
         <strong>Duration:</strong>
         <p><?php echo htmlspecialchars($data['duration'] ?? 'Informasi durasi tidak tersedia'); ?></p>
     </div>
@@ -221,9 +186,7 @@ if (!$data) {
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const loveButton = document.querySelector('.love-circle');
-    
     loveButton.addEventListener('click', function() {
-        // Toggle class 'loved'
         this.classList.toggle('loved');
     });
 });

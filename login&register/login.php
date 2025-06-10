@@ -32,10 +32,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION["username"] = $db_username;
                 $_SESSION["email"] = $email;
                 $_SESSION["role"] = $role;
-                $_SESSION["profile_image"] = $profile_image; // simpan foto profil
+                $_SESSION["profile_image"] = $profile_image;
 
-                // Arahkan ke halaman home
-                header("Location: ../home/home.php");
+                // ✅ Redirect berdasarkan role
+                if ($role === 'admin') {
+                    header("Location: ../admin/dashboard.php");
+                } else {
+                    header("Location: ../home/home.php");
+                }
                 exit();
             } else {
                 $error_message = "Password salah.";
@@ -50,7 +54,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn->close();
 }
 ?>
-?>
+
+
 
 
 
