@@ -1,3 +1,27 @@
+<?php
+session_start();
+
+// Cek apakah user sudah login
+if (!isset($_SESSION["user_id"])) {
+    header("Location: ../login&register/login.php");
+    exit();
+}
+
+// Koneksi ke database
+$conn = new mysqli("localhost", "root", "", "skema_nyoba");
+if ($conn->connect_error) {
+    die("Koneksi gagal: " . $conn->connect_error);
+}
+
+$user_id = $_SESSION["user_id"];
+
+// Ambil data user dari database
+$username = $_SESSION['username'];
+$email = $_SESSION['email'];
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
