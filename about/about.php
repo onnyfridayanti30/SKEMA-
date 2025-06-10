@@ -258,12 +258,14 @@ $heroDescription = "SKEMA atau Skensa Cinema, Web ini kami rancang sebagai wadah
             }
             .member h3 { font-size: 24px; }
             
-            .footer-content {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
-                padding: 0 20px;
-            }
+            .footer-info {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    text-align: center;
+}
+
             .footer-info { text-align: center; }
         }
     </style>
