@@ -28,6 +28,7 @@ a {
     position: absolute;
     width: 100%;
     z-index: 1000;
+    
 }
 
 .header .container {
@@ -52,7 +53,7 @@ a {
 .nav {
     display: flex;
     gap: 8rem;
-    margin-right: 10rem;
+    
 
 }
 
@@ -94,23 +95,6 @@ a {
     z-index: 2;
 }
 
-/* Alternative background options - uncomment to use */
-/*
-.hero {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(44, 62, 80, 0.7) 100%), 
-                url('images/cinema-background.jpg') center/cover no-repeat;
-}
-
-.hero {
-    background: linear-gradient(135deg, rgba(26, 26, 26, 0.8) 0%, rgba(44, 62, 80, 0.8) 100%), 
-                url('images/movie-theater.jpg') center/cover no-repeat;
-}
-
-.hero {
-    background: linear-gradient(to right, rgba(44, 62, 80, 0.9) 0%, rgba(52, 73, 94, 0.5) 100%), 
-                url('images/film-reel.jpg') center/cover no-repeat;
-}
-*/
 
 .hero-content {
     max-width: 1200px;
@@ -281,9 +265,9 @@ a {
 
 /* Footer */
 .footer {
-    background-color: #0f0f0f;
+    
     padding: 3rem 0;
-    border-top: 1px solid #333;
+    border-top: 2px solid #ffffff;
 }
 
 .footer-content {
@@ -293,9 +277,11 @@ a {
 }
 
 .footer-logo h2 {
+     font-family: "Rammetto One", sans-serif;
     color: #ffffff;
     font-size: 1.8rem;
     font-weight: bold;
+    letter-spacing: 8px;
 }
 
 .footer-logo span {
@@ -330,6 +316,8 @@ a {
     
     .nav {
         gap: 1rem;
+        align-items: center;
+        
     }
     
     .hero-content {
