@@ -1,55 +1,61 @@
 <?php
-session_start();
+session_start(); // 🔐 Mulai sesi, walau belum digunakan di sini, tapi bisa dipakai kalau nanti perlu menyimpan data user
 
-// Aktifkan error reporting (opsional untuk debugging)
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// Aktifkan error reporting (opsional untuk debugging saat development)
+error_reporting(E_ALL); // 📣 Tampilkan semua jenis error
+ini_set('display_errors', 1); // 💡 Pastikan error ditampilkan di browser
 
-$error_message = "";
-$success_message = "";
+$error_message = "";  // 🪧 Variabel untuk menyimpan pesan error (jika ada)
+$success_message = ""; // 🥳 Variabel untuk menyimpan pesan sukses (jika pendaftaran berhasil)
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Ambil dan normalisasi input
-    $email = strtolower(trim($_POST["email"] ?? ''));
-    $username = trim($_POST["username"] ?? '');
-    $password = trim($_POST["password"] ?? '');
+if ($_SERVER["REQUEST_METHOD"] == "POST") { // 📥 Cek apakah form dikirim lewat POST
+    // Ambil data dari form dan rapikan inputnya
+    $email = strtolower(trim($_POST["email"] ?? '')); // 📧 Ambil email, ubah jadi huruf kecil, dan hapus spasi depan/belakang
+    $username = trim($_POST["username"] ?? '');       // 👤 Ambil username dan hapus spasi
+    $password = trim($_POST["password"] ?? '');       // 🔒 Ambil password dan hapus spasi
 
+    // ❗ Validasi: semua field harus diisi
     if (empty($email) || empty($username) || empty($password)) {
         $error_message = "Semua field harus diisi.";
     } else {
-        $conn = new mysqli("localhost", "root", "Kevinbi13_", "skema_nyoba");
+        // 🔌 Koneksi ke database
+        $conn = new mysqli("localhost", "root", "", "skema_nyoba");
 
-        if ($conn->connect_error) {
-            die("Koneksi gagal: " . $conn->connect_error);
+        if ($conn->connect_error) { // ❌ Kalau gagal konek
+            die("Koneksi gagal: " . $conn->connect_error); // Hentikan dan tampilkan pesan error
         }
 
-        // Cek duplikat email/username
+        // 🔍 Cek apakah email atau username sudah pernah dipakai
         $check = $conn->prepare("SELECT id FROM users WHERE email = ? OR username = ?");
-        $check->bind_param("ss", $email, $username);
-        $check->execute();
-        $check->store_result();
+        $check->bind_param("ss", $email, $username); // Amankan query dari SQL injection
+        $check->execute(); // Jalankan query
+        $check->store_result(); // Simpan hasilnya untuk dicek jumlah baris
 
-        if ($check->num_rows > 0) {
+        if ($check->num_rows > 0) { // ❌ Kalau sudah ada user dengan email/username itu
             $error_message = "Email atau username sudah digunakan.";
         } else {
+            // 🔐 Enkripsi password sebelum disimpan ke database
             $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+
+            // 📝 Siapkan query insert user baru
             $stmt = $conn->prepare("INSERT INTO users (email, username, password) VALUES (?, ?, ?)");
             $stmt->bind_param("sss", $email, $username, $hashed_password);
 
-            if ($stmt->execute()) {
+            if ($stmt->execute()) { // ✅ Kalau berhasil disimpan
                 $success_message = "Registrasi berhasil! <a href='login.php'>Silakan login di sini</a>.";
             } else {
-                $error_message = "Terjadi kesalahan saat menyimpan data.";
+                $error_message = "Terjadi kesalahan saat menyimpan data."; // ❌ Kalau gagal simpan
             }
 
-            $stmt->close();
+            $stmt->close(); // ✅ Tutup prepared statement
         }
 
-        $check->close();
-        $conn->close();
+        $check->close(); // ✅ Tutup query cek duplikat
+        $conn->close();  // ✅ Tutup koneksi database
     }
 }
 ?>
+
 
 
 <!DOCTYPE html>

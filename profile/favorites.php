@@ -1,50 +1,53 @@
 <?php
-session_start();
-require 'koneksi.php'; // sesuaikan path jika beda folder
+session_start(); // 🔓 Mulai session supaya bisa akses data user dari $_SESSION
 
-if (!isset($_SESSION["user_id"])) {
-    header("Location: ../login&register/login.php"); // redirect ke login jika belum login
-    exit();
+require 'koneksi.php'; // 📂 Menghubungkan file koneksi ke database MySQL
+
+if (!isset($_SESSION["user_id"])) { // 🔐 Cek apakah user sudah login
+    header("Location: ../login&register/login.php"); // 🔄 Kalau belum login, arahkan ke halaman login
+    exit(); // 🛑 Hentikan eksekusi script
 }
 
+// 🆔 Ambil data user dari session
 $user_id = $_SESSION['user_id'];
-$username = $_SESSION['username'] ?? '';
-$email = $_SESSION['email'] ?? '';
-$profile_image = $_SESSION['profile_image'] ?? '';
+$username = $_SESSION['username'] ?? '';      // 👤 Username user (dari session)
+$email = $_SESSION['email'] ?? '';            // 📧 Email user (dari session)
+$profile_image = $_SESSION['profile_image'] ?? ''; // 🖼️ Nama file foto profil user (dari session)
 
-// Ambil ulang profile_image dari database jika diperlukan
+// 🔁 Ambil ulang nama file foto profil langsung dari database
 $sql = "SELECT profile_image FROM users WHERE id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$stmt->bind_result($profile_image_db);
-$stmt->fetch();
-$stmt->close();
+$stmt = $conn->prepare($sql); // Siapkan perintah SQL
+$stmt->bind_param("i", $user_id); // Isi parameter ID user
+$stmt->execute(); // Jalankan query
+$stmt->bind_result($profile_image_db); // Simpan hasil ke variabel
+$stmt->fetch(); // Ambil hasilnya
+$stmt->close(); // Tutup statement
 
-// Gunakan gambar dari DB jika ada, atau fallback ke session
+// 🧠 Tentukan foto profil yang digunakan: kalau ada di DB, pakai; kalau nggak, pakai yang di session
 $final_profile_image = !empty($profile_image_db) ? $profile_image_db : $profile_image;
 
-// Tentukan path ke gambar profile
+// 📍 Tentukan path lengkap ke file foto profil
 $profile_image_path = (!empty($final_profile_image) && file_exists("../uploads/profile_pictures/" . $final_profile_image))
-    ? "../uploads/profile_pictures/" . $final_profile_image
-    : "./img/default.jpg";
+    ? "../uploads/profile_pictures/" . $final_profile_image // Jika file ada, pakai ini
+    : "./img/default.jpg"; // Jika tidak ada file-nya, pakai gambar default
 
-// Ambil data film favorit user
+// 🎬 Ambil daftar film favorit user
 $sql = "SELECT d.id_film, d.judul, d.gambar
         FROM favorites f
         JOIN detail d ON f.detail_id = d.id_film
         WHERE f.user_id = ?";
 
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
+$stmt = $conn->prepare($sql); // Siapkan query join antara tabel favorites dan detail
+$stmt->bind_param("i", $user_id); // Isi parameter ID user
+$stmt->execute(); // Jalankan query
+$result = $stmt->get_result(); // Ambil hasil query
 
-$favorites = [];
+$favorites = []; // Siapkan array kosong untuk menyimpan data film favorit
 while ($row = $result->fetch_assoc()) {
-    $favorites[] = $row;
+    $favorites[] = $row; // Tambahkan data film ke array
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

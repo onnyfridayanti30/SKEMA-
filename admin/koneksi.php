@@ -1,8 +1,8 @@
 <?php
 $host = "localhost";       // Ganti jika hosting beda
 $user = "root";            // Username MySQL
-$password = "Kevinbi13_";            // Password MySQL (kosong jika default XAMPP)
-$database = "skema_nyoba";    // Ganti dengan nama database kamu
+$password = "";            // Password MySQL (kosong jika default XAMPP)
+$database = "skema_nyoba";    // database kamu
 
 $conn = new mysqli($host, $user, $password, $database);
 

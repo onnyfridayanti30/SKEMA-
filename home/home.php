@@ -49,23 +49,25 @@
 
     <hr class="section-line">
 
-    <!-- Movies Grid -->
-    <div class="movies-grid">
-        <?php
-        include 'koneksi.php'; // pastikan file koneksi.php berisi koneksi ke MySQL
+   
+  <div class="movies-grid"> <!-- Container utama untuk grid film -->
+    <?php
+    include 'koneksi.php'; // Menyertakan file koneksi ke database (pastikan $conn sudah aktif)
 
-        $query = mysqli_query($conn, "SELECT * FROM detail");
+    $query = mysqli_query($conn, "SELECT * FROM detail"); // Menjalankan query untuk mengambil semua data dari tabel 'detail'
 
-        while ($movie = mysqli_fetch_assoc($query)) :
-        ?>
-            <div class="movie-card">
-                <a href="detail.php?id=<?php echo $movie['id_film']; ?>">
-                    <img src="./uploads/poster/<?php echo htmlspecialchars($movie['poster']); ?>" alt="<?php echo htmlspecialchars($movie['judul']); ?>">
-                    <h4><?php echo htmlspecialchars($movie['judul']); ?></h4>
-                </a>
-            </div>
-        <?php endwhile; ?>
-    </div>
+    while ($movie = mysqli_fetch_assoc($query)) : // Melakukan loop untuk setiap baris hasil query
+    ?>
+        <div class="movie-card"> <!-- Satu kotak kartu untuk setiap film -->
+            <a href="detail.php?id=<?php echo $movie['id_film']; ?>"> <!-- Link ke halaman detail.php dengan id film sebagai parameter -->
+                <img src="./uploads/poster/<?php echo htmlspecialchars($movie['poster']); ?>" 
+                     alt="<?php echo htmlspecialchars($movie['judul']); ?>"> <!-- Menampilkan poster film, aman dari XSS -->
+                <h4><?php echo htmlspecialchars($movie['judul']); ?></h4> <!-- Menampilkan judul film -->
+            </a>
+        </div>
+    <?php endwhile; ?>
+</div>
+
 
     <!-- Footer -->
     <footer class="footer">

@@ -71,7 +71,7 @@ a {
 
 /* Hero Section Variations */
 .hero {
-    background:url('image/banner.png') center/cover no-repeat;
+    background:url('./uploads/gambar/banner.png') center/cover no-repeat;
     padding: 120px 0 80px;
     min-height: 90vh;
     display: flex;

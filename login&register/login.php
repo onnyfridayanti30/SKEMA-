@@ -1,64 +1,60 @@
 <?php
-session_start();
+session_start(); // 🔐 Mulai sesi — buat menyimpan data user yang login (supaya bisa diakses di halaman lain)
 
 // Koneksi ke database
-$conn = new mysqli("localhost", "root", "Kevinbi13_", "skema_nyoba");
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
+$conn = new mysqli("localhost", "root", "", "skema_nyoba"); // 🔌 Koneksi ke MySQL lokal (pakai username 'root', tanpa password, ke DB 'skema_nyoba')
+if ($conn->connect_error) { // ❌ Kalau koneksi gagal
+    die("Koneksi gagal: " . $conn->connect_error); // ⛔ Tampilkan pesan error & hentikan program
 }
 
-$error_message = "";
+$error_message = ""; // 🪧 Buat nyimpen pesan error (kalau ada)
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST["username"] ?? '';
-    $password = $_POST["password"] ?? '';
+if ($_SERVER["REQUEST_METHOD"] == "POST") { // 📩 Cek apakah form dikirim (pakai POST)
+    $username = $_POST["username"] ?? ''; // ✏️ Ambil input username dari form (kalau gak ada, isi kosong)
+    $password = $_POST["password"] ?? ''; // ✏️ Ambil input password dari form
 
-    if (empty($username) || empty($password)) {
-        $error_message = "Username dan password wajib diisi.";
+    if (empty($username) || empty($password)) { // ⚠️ Kalau salah satu kosong
+        $error_message = "Username dan password wajib diisi."; // 🔔 Tampilkan pesan error
     } else {
-        // Ambil data user dari database
+        // 🔎 Ambil data user dari database berdasarkan username
         $stmt = $conn->prepare("SELECT id, username, email, password, role, profile_image FROM users WHERE username = ?");
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $stmt->store_result();
+        $stmt->bind_param("s", $username); // 🧷 Masukkan username ke query secara aman (biar gak bisa disisipi SQL Injection)
+        $stmt->execute(); // ▶️ Jalankan query
+        $stmt->store_result(); // 📦 Simpan hasil ke memori untuk bisa dicek nanti
 
-        if ($stmt->num_rows === 1) {
+        if ($stmt->num_rows === 1) { // ✅ Kalau ada 1 user yang cocok
+            // 🧩 Ambil hasil query ke variabel
             $stmt->bind_result($id, $db_username, $email, $hashed_password, $role, $profile_image);
-            $stmt->fetch();
+            $stmt->fetch(); // 🔄 Ambil datanya
 
-            if (password_verify($password, $hashed_password)) {
-                // Simpan ke session
+            if (password_verify($password, $hashed_password)) { // 🔐 Cek apakah password yang diketik cocok sama yang di-hash di database
+                // 💾 Simpan data user ke sesi supaya bisa dipakai di halaman lain
                 $_SESSION["user_id"] = $id;
                 $_SESSION["username"] = $db_username;
                 $_SESSION["email"] = $email;
                 $_SESSION["role"] = $role;
                 $_SESSION["profile_image"] = $profile_image;
 
-                // ✅ Redirect berdasarkan role
-                if ($role === 'admin') {
-                    header("Location: ../admin/dashboard.php");
-                } else {
-                    header("Location: ../home/home.php");
+                // 🚪 Arahkan ke halaman sesuai role-nya
+                if ($role === 'admin') { // 👑 Kalau dia admin
+                    header("Location: ../admin/dashboard.php"); // ⏩ Masuk ke dashboard admin
+                } else { // 👤 Kalau bukan admin
+                    header("Location: ../home/home.php"); // ⏩ Masuk ke halaman home user
                 }
-                exit();
+                exit(); // 🛑 Hentikan script setelah redirect
             } else {
-                $error_message = "Password salah.";
+                $error_message = "Password salah."; // ❌ Kalau password gak cocok
             }
         } else {
-            $error_message = "Username tidak ditemukan.";
+            $error_message = "Username tidak ditemukan."; // ❌ Kalau username gak ditemukan di database
         }
 
-        $stmt->close();
+        $stmt->close(); // ✅ Tutup statement setelah selesai
     }
 
-    $conn->close();
+    $conn->close(); // ✅ Tutup koneksi database setelah semua proses selesai
 }
 ?>
-
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
