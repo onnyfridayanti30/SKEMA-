@@ -17,7 +17,7 @@
             </div>
             <nav class="nav">
                 <a href="#" class="nav-link">Home</a>
-                <a href="#" class="nav-link">About us</a>
+                <a href="../about/about.php/" class="nav-link">About us</a>
                 <a href="../profile/profile.php" class="nav-link">Profile</a>
             </nav>
         </div>

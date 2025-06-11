@@ -1,13 +1,18 @@
 <?php
 session_start();
 
+// Aktifkan error reporting (opsional untuk debugging)
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 $error_message = "";
 $success_message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST["email"] ?? '';
-    $username = $_POST["username"] ?? '';
-    $password = $_POST["password"] ?? '';
+    // Ambil dan normalisasi input
+    $email = strtolower(trim($_POST["email"] ?? ''));
+    $username = trim($_POST["username"] ?? '');
+    $password = trim($_POST["password"] ?? '');
 
     if (empty($email) || empty($username) || empty($password)) {
         $error_message = "Semua field harus diisi.";
@@ -18,6 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             die("Koneksi gagal: " . $conn->connect_error);
         }
 
+        // Cek duplikat email/username
         $check = $conn->prepare("SELECT id FROM users WHERE email = ? OR username = ?");
         $check->bind_param("ss", $email, $username);
         $check->execute();
@@ -31,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bind_param("sss", $email, $username, $hashed_password);
 
             if ($stmt->execute()) {
-                $success_message = "Registrasi berhasil! Silakan login.";
+                $success_message = "Registrasi berhasil! <a href='login.php'>Silakan login di sini</a>.";
             } else {
                 $error_message = "Terjadi kesalahan saat menyimpan data.";
             }
@@ -41,11 +47,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $check->close();
         $conn->close();
-
-        if (empty($error_message)) {
-            header("Location: login.php");
-            exit();
-        }
     }
 }
 ?>
@@ -76,6 +77,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         <div class="right-section">
             <h2 class="form-title">Sign Up</h2>
+
+            <?php if (!empty($error_message)): ?>
+    <div class="notif error"><?= htmlspecialchars($error_message) ?></div>
+<?php endif; ?>
+
+<?php if (!empty($success_message)): ?>
+    <div class="notif success"><?= $success_message ?></div>
+<?php endif; ?>
+
             
            <form method="POST" action="">
                 <div class="form-group">

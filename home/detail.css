@@ -1,315 +1,366 @@
+/* Reset box-sizing untuk semua elemen agar padding dan border dihitung dalam total lebar/tinggi */
 * {
     box-sizing: border-box;
 }
 
+/* Styling untuk elemen html dan body */
 html, body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Poppins', sans-serif;
-    background-color: #1c1c1c;
-    color: #fff;
+    margin: 0;          /* Menghilangkan margin default browser */
+    padding: 0;         /* Menghilangkan padding default browser */
+    font-family: 'Poppins', sans-serif;  /* Mengatur font utama ke Poppins */
+    background-color: #1c1c1c;           /* Background gelap (abu-abu sangat gelap) */
+    color: #fff;        /* Warna teks putih sebagai default */
 }
 
+/* Container untuk bagian header */
 .header {
-    position: relative;
-    width: 100%;
+    position: relative;  /* Memungkinkan positioning absolute untuk child elements */
+    width: 100%;        /* Lebar penuh container */
 }
 
+/* Gambar di dalam header */
 .header img {
-    width: 100%;
-    height: 600px;
-    object-fit: cover;
-    display: block;
+    width: 100%;        /* Lebar gambar 100% dari container */
+    height: 600px;      /* Tinggi tetap 600px */
+    object-fit: cover;  /* Gambar akan di-crop untuk mempertahankan aspek rasio */
+    display: block;     /* Menghilangkan space di bawah gambar */
 }
 
+/* Tombol kembali yang berada di atas gambar header */
 .back-button {
-    position: absolute;
-    top: 17px;
-    left: 17px;
-    color: #fff;
-    font-size: 20px;
-    text-decoration: none;
-    background: rgba(0, 0, 0, 0.4);
-    padding: 6px 10px;
-    border-radius: 8px;
-    transition: background-color 0.3s;
+    position: absolute;  /* Posisi absolute relatif terhadap .header */
+    top: 17px;          /* Jarak 17px dari atas */
+    left: 17px;         /* Jarak 17px dari kiri */
+    color: #fff;        /* Warna teks putih */
+    font-size: 20px;    /* Ukuran font 20px */
+    text-decoration: none;  /* Menghilangkan underline pada link */
+    background: rgba(0, 0, 0, 0.4);  /* Background hitam transparan (40% opacity) */
+    padding: 6px 10px;  /* Padding dalam tombol */
+    border-radius: 8px; /* Sudut membulat 8px */
+    transition: background-color 0.3s;  /* Animasi perubahan background 0.3 detik */
 }
 
+/* Efek hover pada tombol kembali */
 .back-button:hover {
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.7);  /* Background lebih gelap saat di-hover (70% opacity) */
 }
 
+/* Container utama untuk konten */
 .content {
-    display: flex;
-    gap: 20px;
-    padding: 20px;
-    justify-content: center;
-    align-items: flex-start;
-    flex-wrap: wrap;
+    display: flex;       /* Menggunakan flexbox layout */
+    gap: 20px;          /* Jarak 20px antar elemen flex */
+    padding: 20px;      /* Padding 20px di semua sisi */
+    justify-content: center;  /* Menempatkan konten di tengah horizontal */
+    align-items: flex-start;  /* Align items ke atas */
+    flex-wrap: wrap;    /* Memungkinkan wrapping ke baris baru jika perlu */
 }
 
+/* Kolom kiri */
 .left-column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: flex;       /* Flexbox untuk kolom kiri */
+    flex-direction: column;  /* Susunan vertikal */
+    align-items: center; /* Align items ke tengah horizontal */
 }
 
+/* Gambar portrait di kolom kiri */
 .portrait {
-    width: 450px;
-    height: 655px;
-    object-fit: cover;
-    border-radius: 20px;
+    width: 450px;       /* Lebar tetap 450px */
+    height: 655px;      /* Tinggi tetap 655px */
+    object-fit: cover;  /* Crop gambar mempertahankan aspek rasio */
+    border-radius: 20px; /* Sudut membulat 20px */
 }
 
+/* Grup tombol di bawah portrait */
 .button-group {
-    display: flex;
-    gap: 15px;
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: flex;       /* Flexbox untuk grup tombol */
+    gap: 15px;          /* Jarak 15px antar tombol */
+    margin-top: 20px;   /* Margin atas 20px */
+    flex-wrap: wrap;    /* Wrapping jika perlu */
+    justify-content: center;  /* Tombol di tengah */
 }
 
+/* Tombol watch utama */
 .watch-button {
-    padding: 10px 100px;
-    background-color: #E53935;
-    color: white;
-    border-radius: 30px;
-    font-weight: bold;
-    font-size: 25px;
-    text-decoration: none;
-    transition: background-color 0.3s;
-    display: inline-block;
+    padding: 10px 100px;  /* Padding: 10px vertikal, 100px horizontal */
+    background-color: #E53935;  /* Background merah */
+    color: white;        /* Teks putih */
+    border-radius: 30px; /* Sudut sangat membulat (pill shape) */
+    font-weight: bold;   /* Teks tebal */
+    font-size: 25px;     /* Ukuran font besar */
+    text-decoration: none;  /* Hilangkan underline */
+    transition: background-color 0.3s;  /* Animasi perubahan warna */
+    display: inline-block;  /* Inline block untuk padding yang proper */
 }
 
+/* Efek hover tombol watch */
 .watch-button:hover {
-    background-color: #c62828;
+    background-color: #c62828;  /* Warna merah lebih gelap saat hover */
 }
 
+/* Tombol love berbentuk lingkaran */
 .love-circle {
-    width: 60px;
-    height: 60px;
-    background-color: #E53935;
-    color: #837E7E;
-    font-size: 30px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    border: none;
+    width: 60px;        /* Lebar 60px */
+    height: 60px;       /* Tinggi 60px (membuat lingkaran sempurna) */
+    background-color: #E53935;  /* Background merah */
+    color: #837E7E;     /* Warna icon abu-abu */
+    font-size: 30px;    /* Ukuran icon */
+    border-radius: 50%; /* Membuat bentuk lingkaran */
+    display: flex;      /* Flexbox untuk centering */
+    align-items: center;     /* Center vertikal */
+    justify-content: center; /* Center horizontal */
+    cursor: pointer;    /* Cursor pointer saat hover */
+    transition: background-color 0.3s;  /* Animasi perubahan warna */
+    border: none;       /* Hilangkan border default */
 }
 
+/* Efek hover pada tombol love */
 .love-circle:hover {
-    background-color: #c62828;
+    background-color: #c62828;  /* Warna lebih gelap saat hover */
 }
 
+/* State ketika tombol love sudah di-klik (loved) */
 .love-circle.loved {
-    color: #fff !important;
+    color: #fff !important;  /* Warna icon jadi putih, !important untuk override */
 }
 
+/* Kolom kanan untuk konten teks */
 .right-column {
-    flex: 1;
-    min-width: 300px;
+    flex: 1;            /* Mengambil sisa ruang yang tersedia */
+    min-width: 300px;   /* Lebar minimum 300px */
 }
 
+/* Paragraf di kolom kanan */
 .right-column p {
-    font-size: 36px;
-    line-height: 1.6;
-    margin: 10px 0;
+    font-size: 36px;    /* Ukuran font besar */
+    line-height: 1.6;   /* Jarak antar baris */
+    margin: 10px 0;     /* Margin vertikal */
 }
 
+/* Teks tebal di kolom kanan */
 .right-column strong {
-    font-size: 36px;
-    margin-top: 20px;
-    display: block;
-    color: white;
+    font-size: 36px;    /* Ukuran font sama dengan paragraf */
+    margin-top: 20px;   /* Margin atas lebih besar */
+    display: block;     /* Display block agar bisa diatur margin */
+    color: white;       /* Warna putih eksplisit */
 }
 
-/* Mobile content - hidden by default */
+/* Konten mobile - disembunyikan secara default */
 .mobile-content {
-    display: none;
+    display: none;      /* Tersembunyi di desktop */
 }
 
 /* ======================== RESPONSIVE ========================= */
+/* Media query untuk tablet dan mobile (max-width: 768px) */
 @media (max-width: 768px) {
+    /* Mengurangi tinggi gambar header di mobile */
     .header img {
-        height: 300px;
+        height: 300px;   /* Tinggi lebih kecil untuk mobile */
     }
 
+    /* Menyesuaikan tombol back untuk mobile */
     .back-button {
-        font-size: 18px;
-        padding: 8px 12px;
+        font-size: 18px;    /* Font lebih kecil */
+        padding: 8px 12px;  /* Padding disesuaikan */
     }
 
+    /* Menyembunyikan konten desktop */
     .content {
-        display: none;
+        display: none;      /* Sembunyikan layout desktop */
     }
 
+    /* Menampilkan konten mobile */
     .mobile-content {
-        display: block;
-        padding: 20px;
+        display: block;     /* Tampilkan layout mobile */
+        padding: 20px;      /* Padding untuk mobile */
     }
 
+    /* Header section mobile */
     .mobile-header {
-        text-align: center;
-        margin-bottom: 20px;
+        text-align: center;    /* Teks di tengah */
+        margin-bottom: 20px;   /* Margin bawah */
     }
 
+    /* Portrait gambar di mobile */
     .mobile-portrait {
-        width: 100%;
-        max-width: 280px;
-        height: auto;
-        object-fit: cover;
-        border-radius: 15px;
-        margin: 0 auto 20px auto;
-        display: block;
+        width: 100%;           /* Lebar 100% dari container */
+        max-width: 280px;      /* Maksimal 280px */
+        height: auto;          /* Tinggi otomatis sesuai aspek rasio */
+        object-fit: cover;     /* Crop jika perlu */
+        border-radius: 15px;   /* Sudut membulat */
+        margin: 0 auto 20px auto;  /* Center horizontal dengan margin bawah */
+        display: block;        /* Display block untuk margin auto */
     }
 
+    /* Grup tombol mobile */
     .mobile-button-group {
-        display: flex;
-        gap: 15px;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 30px;
+        display: flex;         /* Flexbox layout */
+        gap: 15px;            /* Jarak antar tombol */
+        justify-content: center;  /* Center horizontal */
+        align-items: center;   /* Center vertikal */
+        margin-bottom: 30px;   /* Margin bawah */
     }
 
+    /* Tombol watch mobile */
     .mobile-watch-button {
-        padding: 12px 30px;
-        background-color: #E53935;
-        color: white;
-        border-radius: 25px;
-        font-weight: bold;
-        font-size: 16px;
-        text-decoration: none;
-        transition: background-color 0.3s;
-        display: inline-block;
-        border: none;
-        cursor: pointer;
+        padding: 12px 30px;       /* Padding lebih kecil */
+        background-color: #E53935; /* Warna merah */
+        color: white;             /* Teks putih */
+        border-radius: 25px;      /* Sudut membulat */
+        font-weight: bold;        /* Teks tebal */
+        font-size: 16px;          /* Font lebih kecil */
+        text-decoration: none;    /* Hilangkan underline */
+        transition: background-color 0.3s;  /* Animasi */
+        display: inline-block;    /* Inline block */
+        border: none;            /* Hilangkan border */
+        cursor: pointer;         /* Cursor pointer */
     }
 
+    /* Hover effect tombol watch mobile */
     .mobile-watch-button:hover {
-        background-color: #c62828;
+        background-color: #c62828;  /* Warna lebih gelap */
     }
 
+    /* Tombol love mobile (lingkaran) */
     .mobile-love-circle {
-        width: 50px;
-        height: 50px;
-        background-color: #E53935;
-        color: #837E7E;
-        font-size: 20px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        border: none;
+        width: 50px;              /* Lebar lebih kecil */
+        height: 50px;             /* Tinggi lebih kecil */
+        background-color: #E53935; /* Background merah */
+        color: #837E7E;           /* Warna icon abu-abu */
+        font-size: 20px;          /* Font lebih kecil */
+        border-radius: 50%;       /* Bentuk lingkaran */
+        display: flex;            /* Flexbox */
+        align-items: center;      /* Center vertikal */
+        justify-content: center;  /* Center horizontal */
+        cursor: pointer;          /* Cursor pointer */
+        transition: background-color 0.3s;  /* Animasi */
+        border: none;            /* Hilangkan border */
     }
 
+    /* Hover effect love circle mobile */
     .mobile-love-circle:hover {
-        background-color: #c62828;
+        background-color: #c62828;  /* Warna lebih gelap */
     }
 
+    /* State loved untuk mobile */
     .mobile-love-circle.loved {
-        color: #fff !important;
+        color: #fff !important;     /* Icon putih saat loved */
     }
 
+    /* Container teks mobile */
     .mobile-text-content {
-        text-align: left;
-        padding: 0 10px;
+        text-align: left;          /* Align teks ke kiri */
+        padding: 0 10px;           /* Padding horizontal */
     }
 
+    /* Paragraf teks mobile */
     .mobile-text-content p {
-        font-size: 16px;
-        line-height: 1.6;
-        margin: 10px 0;
-        text-align: justify;
+        font-size: 16px;           /* Font lebih kecil */
+        line-height: 1.6;          /* Line height */
+        margin: 10px 0;            /* Margin vertikal */
+        text-align: justify;       /* Justify text */
     }
 
+    /* Teks tebal mobile */
     .mobile-text-content strong {
-        font-size: 18px;
-        margin-top: 25px;
-        margin-bottom: 8px;
-        display: block;
-        color: rgb(255, 255, 255);
-        font-weight: 600;
+        font-size: 18px;           /* Font sedikit lebih besar dari paragraf */
+        margin-top: 25px;          /* Margin atas */
+        margin-bottom: 8px;        /* Margin bawah */
+        display: block;            /* Display block */
+        color: rgb(255, 255, 255); /* Warna putih */
+        font-weight: 600;          /* Font weight */
     }
 
+    /* Strong pertama punya margin atas lebih kecil */
     .mobile-text-content strong:first-of-type {
-        margin-top: 15px;
+        margin-top: 15px;          /* Margin atas lebih kecil */
     }
 
+    /* Section info mobile */
     .info-section {
-        margin-bottom: 20px;
+        margin-bottom: 20px;       /* Margin bawah */
     }
 }
 
+/* Media query untuk mobile kecil (max-width: 480px) */
 @media (max-width: 480px) {
+    /* Header image lebih kecil */
     .header img {
-        height: 250px;
+        height: 250px;             /* Tinggi lebih kecil */
     }
 
+    /* Padding mobile content lebih kecil */
     .mobile-content {
-        padding: 15px;
+        padding: 15px;             /* Padding dikurangi */
     }
 
+    /* Portrait mobile lebih kecil */
     .mobile-portrait {
-        max-width: 250px;
+        max-width: 250px;          /* Maksimal width lebih kecil */
     }
 
+    /* Button group mobile spacing */
     .mobile-button-group {
-        gap: 10px;
-        margin-bottom: 25px;
+        gap: 10px;                 /* Gap lebih kecil */
+        margin-bottom: 25px;       /* Margin bawah dikurangi */
     }
 
+    /* Watch button mobile lebih kecil */
     .mobile-watch-button {
-        font-size: 15px;
-        padding: 10px 25px;
+        font-size: 15px;           /* Font lebih kecil */
+        padding: 10px 25px;        /* Padding dikurangi */
     }
 
+    /* Love circle mobile lebih kecil */
     .mobile-love-circle {
-        width: 45px;
-        height: 45px;
-        font-size: 18px;
+        width: 45px;               /* Lebar dikurangi */
+        height: 45px;              /* Tinggi dikurangi */
+        font-size: 18px;           /* Font icon lebih kecil */
     }
 
+    /* Text content mobile lebih kecil */
     .mobile-text-content p {
-        font-size: 14px;
+        font-size: 14px;           /* Font paragraf lebih kecil */
     }
 
     .mobile-text-content strong {
-        font-size: 16px;
+        font-size: 16px;           /* Font strong lebih kecil */
     }
 
+    /* Info section spacing */
     .info-section {
-        margin-bottom: 15px;
+        margin-bottom: 15px;       /* Margin dikurangi */
     }
 }
 
+/* Media query untuk mobile sangat kecil (max-width: 360px) */
 @media (max-width: 360px) {
+    /* Header image paling kecil */
     .header img {
-        height: 200px;
+        height: 200px;             /* Tinggi paling kecil */
     }
 
+    /* Mobile content padding minimal */
     .mobile-content {
-        padding: 10px;
+        padding: 10px;             /* Padding minimal */
     }
 
+    /* Portrait paling kecil */
     .mobile-portrait {
-        max-width: 220px;
+        max-width: 220px;          /* Width paling kecil */
     }
 
+    /* Watch button paling kecil */
     .mobile-watch-button {
-        font-size: 14px;
-        padding: 8px 20px;
+        font-size: 14px;           /* Font paling kecil */
+        padding: 8px 20px;         /* Padding minimal */
     }
 
+    /* Text content paling kecil */
     .mobile-text-content p {
-        font-size: 13px;
+        font-size: 13px;           /* Font paling kecil */
     }
 
     .mobile-text-content strong {
-        font-size: 15px;
+        font-size: 15px;           /* Font strong paling kecil */
     }
 }
