@@ -1,10 +1,10 @@
 <?php
 $host = "localhost";
 $user = "root";
-$pass = ""; // Kosong untuk XAMPP default
+$pass = "Kevinbi13_"; // Kosong untuk XAMPP default
 $dbname = "skema_nyoba";
 
-$conn = new mysqli("localhost", "root", "", "skema_nyoba");
+$conn = new mysqli("localhost", "root", "Kevinbi13_", "skema_nyoba");
 
 
 if ($conn->connect_error) {

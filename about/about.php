@@ -65,21 +65,23 @@ $heroDescription = "SKEMA atau Skensa Cinema, Web ini kami rancang sebagai wadah
             border-bottom: 2px solid rgba(255, 255, 255, 0.95);
         }
         .logo { 
-            font-size: 24px; 
+            font-size: 40px; 
             font-weight: bold; 
             font-family: "Rammetto One", sans-serif;
+            letter-spacing: 8px;
         }
         .logo .red { color: #ff4757; }
         .nav-links { 
+            font-size: 20px;
             display: flex; 
             padding: 0 200px;
-            gap: 40px; 
+            gap: 8rem; 
             list-style: none; 
         }
         .nav-links a { 
             color: white; 
             text-decoration: none; 
-            font-size: 16px;
+            font-size: 20px;
             font-weight: bold;
             transition: color 0.3s;
         }
@@ -184,9 +186,9 @@ $heroDescription = "SKEMA atau Skensa Cinema, Web ini kami rancang sebagai wadah
         
         /* Footer */
 .footer {
-    background-color: #0f0f0f;
+    
     padding: 3rem 0;
-    border-top: 1px solid #333;
+    border-top: 3px solid #ffffff;
 }
 
 .footer-content {
@@ -197,9 +199,10 @@ $heroDescription = "SKEMA atau Skensa Cinema, Web ini kami rancang sebagai wadah
 
 .footer-logo h2 {
     color: #ffffff;
-    font-size: 1.8rem;
+    font-size: 40px;
     font-weight: bold;
     font-family: "Rammetto One", sans-serif;
+    letter-spacing: 8px;
 }
 
 .footer-logo span {
@@ -259,6 +262,7 @@ $heroDescription = "SKEMA atau Skensa Cinema, Web ini kami rancang sebagai wadah
             .member h3 { font-size: 24px; }
             
             .footer-info {
+             display: flex; /* Tambahkan ini */
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -275,9 +279,9 @@ $heroDescription = "SKEMA atau Skensa Cinema, Web ini kami rancang sebagai wadah
         <nav class="nav">
             <div class="logo">SKE<span class="red">MA</span></div>
             <ul class="nav-links">
-                <li><a href="#">Home</a></li>
+                <li><a href="../home/home.php">Home</a></li>
                 <li><a href="#">About us</a></li>
-                <li><a href="#">Profile</a></li>
+                <li><a href="../profile/profile.php">Profile</a></li>
             </ul>
         </nav>
         

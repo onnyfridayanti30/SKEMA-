@@ -1,0 +1,315 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #1c1c1c;
+    color: #fff;
+}
+
+.header {
+    position: relative;
+    width: 100%;
+}
+
+.header img {
+    width: 100%;
+    height: 600px;
+    object-fit: cover;
+    display: block;
+}
+
+.back-button {
+    position: absolute;
+    top: 17px;
+    left: 17px;
+    color: #fff;
+    font-size: 20px;
+    text-decoration: none;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.back-button:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.content {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.left-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.portrait {
+    width: 450px;
+    height: 655px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.watch-button {
+    padding: 10px 100px;
+    background-color: #E53935;
+    color: white;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 25px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    display: inline-block;
+}
+
+.watch-button:hover {
+    background-color: #c62828;
+}
+
+.love-circle {
+    width: 60px;
+    height: 60px;
+    background-color: #E53935;
+    color: #837E7E;
+    font-size: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border: none;
+}
+
+.love-circle:hover {
+    background-color: #c62828;
+}
+
+.love-circle.loved {
+    color: #fff !important;
+}
+
+.right-column {
+    flex: 1;
+    min-width: 300px;
+}
+
+.right-column p {
+    font-size: 36px;
+    line-height: 1.6;
+    margin: 10px 0;
+}
+
+.right-column strong {
+    font-size: 36px;
+    margin-top: 20px;
+    display: block;
+    color: white;
+}
+
+/* Mobile content - hidden by default */
+.mobile-content {
+    display: none;
+}
+
+/* ======================== RESPONSIVE ========================= */
+@media (max-width: 768px) {
+    .header img {
+        height: 300px;
+    }
+
+    .back-button {
+        font-size: 18px;
+        padding: 8px 12px;
+    }
+
+    .content {
+        display: none;
+    }
+
+    .mobile-content {
+        display: block;
+        padding: 20px;
+    }
+
+    .mobile-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .mobile-portrait {
+        width: 100%;
+        max-width: 280px;
+        height: auto;
+        object-fit: cover;
+        border-radius: 15px;
+        margin: 0 auto 20px auto;
+        display: block;
+    }
+
+    .mobile-button-group {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .mobile-watch-button {
+        padding: 12px 30px;
+        background-color: #E53935;
+        color: white;
+        border-radius: 25px;
+        font-weight: bold;
+        font-size: 16px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+        display: inline-block;
+        border: none;
+        cursor: pointer;
+    }
+
+    .mobile-watch-button:hover {
+        background-color: #c62828;
+    }
+
+    .mobile-love-circle {
+        width: 50px;
+        height: 50px;
+        background-color: #E53935;
+        color: #837E7E;
+        font-size: 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        border: none;
+    }
+
+    .mobile-love-circle:hover {
+        background-color: #c62828;
+    }
+
+    .mobile-love-circle.loved {
+        color: #fff !important;
+    }
+
+    .mobile-text-content {
+        text-align: left;
+        padding: 0 10px;
+    }
+
+    .mobile-text-content p {
+        font-size: 16px;
+        line-height: 1.6;
+        margin: 10px 0;
+        text-align: justify;
+    }
+
+    .mobile-text-content strong {
+        font-size: 18px;
+        margin-top: 25px;
+        margin-bottom: 8px;
+        display: block;
+        color: rgb(255, 255, 255);
+        font-weight: 600;
+    }
+
+    .mobile-text-content strong:first-of-type {
+        margin-top: 15px;
+    }
+
+    .info-section {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header img {
+        height: 250px;
+    }
+
+    .mobile-content {
+        padding: 15px;
+    }
+
+    .mobile-portrait {
+        max-width: 250px;
+    }
+
+    .mobile-button-group {
+        gap: 10px;
+        margin-bottom: 25px;
+    }
+
+    .mobile-watch-button {
+        font-size: 15px;
+        padding: 10px 25px;
+    }
+
+    .mobile-love-circle {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+    }
+
+    .mobile-text-content p {
+        font-size: 14px;
+    }
+
+    .mobile-text-content strong {
+        font-size: 16px;
+    }
+
+    .info-section {
+        margin-bottom: 15px;
+    }
+}
+
+@media (max-width: 360px) {
+    .header img {
+        height: 200px;
+    }
+
+    .mobile-content {
+        padding: 10px;
+    }
+
+    .mobile-portrait {
+        max-width: 220px;
+    }
+
+    .mobile-watch-button {
+        font-size: 14px;
+        padding: 8px 20px;
+    }
+
+    .mobile-text-content p {
+        font-size: 13px;
+    }
+
+    .mobile-text-content strong {
+        font-size: 15px;
+    }
+}

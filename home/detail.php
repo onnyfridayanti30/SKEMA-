@@ -25,154 +25,33 @@ if ($id_film) {
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Detail Film - </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Film</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="detail.css">
     <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: 'Poppins', sans-serif;
-            background-color: #1c1c1c;
-            color: #fff;
-        }
-        .header {
-            position: relative;
-            width: 100%;
-        }
-        .header img {
-            width: 100%;
-            height: 600px;
-            display: block;
-            object-fit: cover;
-        }
-        .back-button {
-            position: absolute;
-            top: 17px;
-            left: 17px;
-            color: #fff;
-            font-size: 20px;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        .back-button:hover {
-            background-color: rgba(0,0,0,0.7);
-        }
-        .content {
-            display: flex;
-            gap: 20px;
-            padding: 20px;
-            flex-wrap: wrap;
-        }
-        .left-column {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .portrait {
-            width: 450px;
-            height: 655px;
-            border-radius: 20px;
-            object-fit: cover;
-            margin-bottom: 15px;
-        }
-        .button-group {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .watch-button {
-            padding: 10px 100px;
-            background-color: #E53935;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 30px;
-            font-weight: bold;
-            font-size: 25px;
-            transition: background-color 0.3s;
-        }
-        .watch-button:hover {
-            background-color: #c62828;
-        }
-        .love-circle {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #E53935;
-            color: #837E7E;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            font-size: 30px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .love-circle:hover {
-            background-color: #c62828;
-        }
-        .love-circle.loved {
-            color: #fff !important;
-        }
-        .love-circle.loved:hover {
-            color: #fff !important;
-        }
-        .text-content {
-            flex: 1;
-            min-width: 250px;
-        }
-        .text-content p {
-            font-size: 36px;
-            line-height: 1.6;
-            margin: 10px 0;
-        }
-        .text-content strong {
-            font-size: 36px;
-            margin-top: 20px;
-            display: block;
-            color: rgb(255, 255, 255);
-        }
-        @media (max-width: 1024px) {
-            .header img { height: 350px; }
-        }
-        @media (max-width: 768px) {
-            .header img { height: 250px; }
-            .content { flex-direction: column; align-items: center; }
-            .portrait { width: 300px; height: 400px; }
-            .watch-button { padding: 10px 50px; font-size: 18px; }
-            .text-content p { font-size: 16px; }
-            .text-content strong { font-size: 20px; }
-        }
-        @media (max-width: 480px) {
-            .header img { height: 200px; }
-            .portrait { width: 250px; height: 350px; }
-            .watch-button { padding: 8px 30px; font-size: 16px; }
-            .text-content p { font-size: 14px; }
-            .text-content strong { font-size: 18px; }
-        }
+        /* ... Masukkan isi file style.css dari jawaban sebelumnya di sini ... */
     </style>
 </head>
 <body>
 
 <div class="header">
     <a href="../home/home.php" class="back-button"><i class="fas fa-arrow-left"></i></a>
-    <img src="./uploads/poster/<?php echo htmlspecialchars($data['poster'] ?? 'default.jpg'); ?>">
+    <img src="./uploads/poster/<?php echo htmlspecialchars($data['poster'] ?? 'default.jpg'); ?>" alt="Poster">
 </div>
 
+<!-- Desktop Layout -->
 <div class="content">
     <div class="left-column">
-        <img class="portrait" src="./uploads/gambar/<?php echo htmlspecialchars($data['gambar'] ?? 'default.jpg'); ?>" >
+        <img class="portrait" src="./uploads/gambar/<?php echo htmlspecialchars($data['gambar'] ?? 'default.jpg'); ?>" alt="Gambar Film">
         <div class="button-group">
             <a href="<?php echo htmlspecialchars($data['link'] ?? '#'); ?>" class="watch-button" target="_blank">▶ Watch Now</a>
-            <form method="POST" action="../profile/add_favorite.php">
-                 <input type="hidden" name="detail_id" value="<?= $id_film ?>">
-                  <button type="submit" class="love-circle"><i class="fas fa-heart"></i></button>
-            </form>
-
+            <button type="button" class="love-circle" id="desktopLoveBtn"><i class="fas fa-heart"></i></button>
         </div>
     </div>
 
-    <div class="text-content">
+    <div class="right-column">
         <p><?php echo htmlspecialchars($data['sinopsis'] ?? 'Sinopsis tidak tersedia'); ?></p>
         <strong>Actor:</strong>
         <p><?php echo htmlspecialchars($data['actor'] ?? 'Informasi actor tidak tersedia'); ?></p>
@@ -183,12 +62,90 @@ if ($id_film) {
     </div>
 </div>
 
+<!-- Mobile Layout -->
+<div class="mobile-content">
+    <div class="mobile-header">
+        <img class="mobile-portrait" src="./uploads/gambar/<?php echo htmlspecialchars($data['gambar'] ?? 'default.jpg'); ?>" alt="Gambar Film">
+        <div class="mobile-button-group">
+            <button onclick="openYouTube('<?php echo addslashes($data['link'] ?? '#'); ?>')" class="mobile-watch-button">
+                <i class="fas fa-play"></i> Watch Now
+            </button>
+            <button type="button" class="mobile-love-circle" id="mobileLoveBtn"><i class="fas fa-heart"></i></button>
+        </div>
+    </div>
+
+    <div class="mobile-text-content">
+        <div class="info-section">
+            <p><?php echo htmlspecialchars($data['sinopsis'] ?? 'Sinopsis tidak tersedia'); ?></p>
+        </div>
+
+        <div class="info-section">
+            <strong>Actor:</strong>
+            <p><?php echo htmlspecialchars($data['actor'] ?? 'Informasi actor tidak tersedia'); ?></p>
+        </div>
+
+        <div class="info-section">
+            <strong>Director:</strong>
+            <p><?php echo htmlspecialchars($data['direktor'] ?? 'Informasi director tidak tersedia'); ?></p>
+        </div>
+
+        <div class="info-section">
+            <strong>Duration:</strong>
+            <p><?php echo htmlspecialchars($data['duration'] ?? 'Informasi durasi tidak tersedia'); ?></p>
+        </div>
+    </div>
+</div>
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const loveButton = document.querySelector('.love-circle');
-    loveButton.addEventListener('click', function() {
-        this.classList.toggle('loved');
-    });
+function openYouTube(link) {
+    if (!link || link === '#') return;
+    let finalLink = link;
+    if (link.includes('youtu.be/')) {
+        const videoId = link.split('youtu.be/')[1].split('?')[0];
+        finalLink = `https://www.youtube.com/watch?v=${videoId}`;
+    }
+    if (/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        window.location.href = finalLink;
+    } else {
+        window.open(finalLink, '_blank');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const desktopLoveButton = document.querySelector('#desktopLoveBtn');
+    const mobileLoveButton = document.querySelector('#mobileLoveBtn');
+
+    function syncLoveStatus() {
+        const isLoved = localStorage.getItem('movie_loved_id') === 'true';
+        if (isLoved) {
+            if (desktopLoveButton) desktopLoveButton.classList.add('loved');
+            if (mobileLoveButton) mobileLoveButton.classList.add('loved');
+        }
+    }
+
+    function saveLoveStatus(isLoved) {
+        localStorage.setItem('movie_loved_id', isLoved);
+    }
+
+    syncLoveStatus();
+
+    if (desktopLoveButton) {
+        desktopLoveButton.addEventListener('click', function () {
+            this.classList.toggle('loved');
+            const isLoved = this.classList.contains('loved');
+            saveLoveStatus(isLoved);
+            if (mobileLoveButton) mobileLoveButton.classList.toggle('loved', isLoved);
+        });
+    }
+
+    if (mobileLoveButton) {
+        mobileLoveButton.addEventListener('click', function () {
+            this.classList.toggle('loved');
+            const isLoved = this.classList.contains('loved');
+            saveLoveStatus(isLoved);
+            if (desktopLoveButton) desktopLoveButton.classList.toggle('loved', isLoved);
+        });
+    }
 });
 </script>
 

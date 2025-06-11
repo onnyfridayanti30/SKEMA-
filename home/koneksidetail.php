@@ -1,7 +1,7 @@
 <?php
 $host = "localhost";
 $user = "root";
-$pass = "";
+$pass = "Kevinbi13_";
 $db   = "skema_nyoba";
 
 $koneksi = new mysqli($host, $user, $pass, $db);

@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($email) || empty($username) || empty($password)) {
         $error_message = "Semua field harus diisi.";
     } else {
-        $conn = new mysqli("localhost", "root", "", "skema_nyoba");
+        $conn = new mysqli("localhost", "root", "Kevinbi13_", "skema_nyoba");
 
         if ($conn->connect_error) {
             die("Koneksi gagal: " . $conn->connect_error);

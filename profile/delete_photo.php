@@ -8,7 +8,7 @@ if (!isset($_SESSION["user_id"])) {
 }
 
 // Koneksi ke database
-$conn = new mysqli("localhost", "root", "", "skema_nyoba");
+$conn = new mysqli("localhost", "root", "Kevinbi13_", "skema_nyoba");
 if ($conn->connect_error) {
     die("Koneksi gagal: " . $conn->connect_error);
 }
