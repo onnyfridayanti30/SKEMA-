@@ -46,7 +46,7 @@
       background: #FF4081;
     }
 
-    .container {
+      .container {
       margin-top: 10px;
       display: flex;
       flex-direction: row;
@@ -101,7 +101,7 @@
       background-color: #f9f1f1;
     }
 
-    .sidebar-item.active a {
+    .sidebar-item.account-item a{
       background-color: #ffecf1;
     }
 
@@ -110,7 +110,7 @@
     }
 
     .logout-item {
-      margin-top: 290px;
+      margin-top: 230px;
       padding-top: 20px;
     }
 
@@ -129,7 +129,7 @@
     }
 
     .profile-image {
-      width: 170px;
+      width: 300px;
       height: 170px;
       border-radius: 50%;
       object-fit: cover;
@@ -154,10 +154,120 @@
       margin-bottom: 20px;
     }
 
-    .euspas{
-        margin-bottom: 20px;
+    .profile-image {
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      object-fit: cover;
     }
 
-   .gariz {
-    width: 550px;
-   }
+     .profile-fields {
+      margin-top: 40px;
+      margin-left: -50px; /* geser ke kiri melewati foto */
+    }
+
+    .field-group {
+      margin-bottom: 30px;
+    }
+
+    .field-label {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: white;
+    }
+
+    .field-value {
+      font-size: 18px;
+      color: white;
+      padding-bottom: 20px;
+      border-bottom: 3px solid white;
+      font-weight: 400;
+      max-width: 650px;
+      
+    }
+
+
+
+
+
+
+
+
+
+
+    @media (max-width: 1024px) {
+      .main-content {
+        padding-left: 60px;
+      }
+
+      .profile-fields {
+        margin-left: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        border-radius: 0;
+      }
+
+      .sidebar {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        border-radius: 0;
+        padding: 15px;
+      }
+
+      .sidebar h2 {
+        display: none;
+      }
+
+      .sidebar-item {
+        flex: 1 1 30%;
+        justify-content: center;
+        padding: 10px 0;
+        border: none;
+        text-align: center;
+      }
+
+      .main-content {
+        padding: 20px;
+      }
+
+      .profile-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .profile-info {
+        padding-left: 0;
+      }
+
+      .update-btn {
+        padding-left: 0;
+      }
+
+      .field-value {
+        font-size: 16px;
+        max-width: 100%;
+      }
+
+      .profile-fields {
+        margin-left: 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .logo {
+        font-size: 28px;
+      }
+
+      .home-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+    }

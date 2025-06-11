@@ -76,7 +76,7 @@ while ($row = $film_terbaru_result->fetch_assoc()) {
                 <span>Log Out</span>
               </a>
             </div>
-          </div>
+</div>
 
   <div class="main-content">
     <div class="welcome-user">
