@@ -1,131 +1,184 @@
 <?php
-// Menginclude file koneksi database
+// Menginclude file koneksi database untuk mendapatkan variabel $koneksi
 include 'koneksidetail.php';
 
-// Mengambil parameter 'id' dari URL menggunakan GET, jika tidak ada akan null
+// Mengambil parameter 'id' dari URL menggunakan superglobal $_GET
+// Operator null coalescing (??) memberikan nilai null jika 'id' tidak ada
 $id_film = $_GET['id'] ?? null;
 
-// Cek apakah ID film ada
+// Cek apakah variabel $id_film memiliki nilai (tidak null atau empty)
 if ($id_film) {
-    // Query untuk mengambil data film berdasarkan ID dengan prepared statement (mencegah SQL injection)
+    // Membuat query SQL dengan prepared statement untuk keamanan
+    // Tanda ? adalah placeholder untuk parameter yang akan di-bind
     $query = "SELECT * FROM detail WHERE id_film = ?";
+    
+    // Mempersiapkan statement SQL menggunakan koneksi database
     $stmt = $koneksi->prepare($query);
-    // Bind parameter ID sebagai integer
+    
+    // Bind parameter ke placeholder, "i" berarti integer
+    // Parameter pertama adalah tipe data, parameter kedua adalah nilai
     $stmt->bind_param("i", $id_film);
-    // Eksekusi query
+    
+    // Menjalankan/eksekusi query yang sudah disiapkan
     $stmt->execute();
-    // Ambil hasil query
+    
+    // Mengambil hasil dari query yang telah dieksekusi
     $result = $stmt->get_result();
-    // Konversi hasil ke array associative
+    
+    // Mengkonversi hasil query menjadi array associative
+    // fetch_assoc() mengambil satu baris data sebagai array
     $data = $result->fetch_assoc();
 
-    // Cek apakah data ditemukan
+    // Mengecek apakah data ditemukan dalam database
     if (!$data) {
+        // Jika data tidak ditemukan, tampilkan pesan error
         echo "Data dengan ID $id_film tidak ditemukan di database.";
-        exit; // Hentikan eksekusi script
+        // Menghentikan eksekusi script PHP
+        exit;
     }
 } else {
-    // Jika ID tidak ada di URL
+    // Jika parameter 'id' tidak ada dalam URL
     echo "ID tidak ditemukan di URL.";
-    exit; // Hentikan eksekusi script
+    // Menghentikan eksekusi script PHP
+    exit;
 }
 ?>
 
 <!DOCTYPE html>
+<!-- Deklarasi dokumen HTML5 -->
 <html lang="id">
+<!-- Tag pembuka HTML dengan bahasa Indonesia -->
 <head>
+    <!-- Pengaturan karakter encoding UTF-8 untuk mendukung karakter khusus -->
     <meta charset="UTF-8">
-    <!-- Meta viewport untuk responsive design -->
+    
+    <!-- Meta tag untuk responsive design, mengatur viewport -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Judul halaman yang muncul di tab browser -->
     <title>Detail Film</title>
-    <!-- Link ke Font Awesome untuk ikon -->
+    
+    <!-- Link ke library Font Awesome untuk menggunakan ikon-ikon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <!-- Link ke Google Fonts untuk font Poppins -->
+    
+    <!-- Link ke Google Fonts untuk menggunakan font Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Link ke file CSS eksternal -->
+    
+    <!-- Link ke file CSS eksternal untuk styling -->
     <link rel="stylesheet" href="detail.css">
+    
+    <!-- Tag style untuk CSS internal jika diperlukan -->
     <style>
         /* Placeholder untuk CSS internal jika diperlukan */
     </style>
 </head>
 <body>
+<!-- Tag pembuka body, tempat konten utama halaman -->
 
-<!-- Header section dengan tombol back dan poster -->
+<!-- Header section yang berisi tombol back dan poster film -->
 <div class="header">
-    <!-- Tombol back ke halaman home -->
-    <a href="../home/home.php" class="back-button"><i class="fas fa-arrow-left"></i></a>
-    <!-- Menampilkan poster film, dengan fallback ke default.jpg jika tidak ada -->
+    <!-- Link tombol back yang mengarah ke halaman home -->
+    <!-- Class "back-button" untuk styling CSS -->
+    <a href="../home/home.php" class="back-button">
+        <!-- Ikon panah kiri dari Font Awesome -->
+        <i class="fas fa-arrow-left"></i>
+    </a>
+    
+    <!-- Gambar poster film -->
     <img src="./uploads/poster/<?php echo htmlspecialchars($data['poster'] ?? 'default.jpg'); ?>" alt="Poster">
+    <!-- htmlspecialchars() mencegah XSS attack dengan mengkonversi karakter khusus -->
+    <!-- Operator ?? memberikan nilai default 'default.jpg' jika poster kosong -->
 </div>
 
-<!-- Layout untuk Desktop -->
+<!-- Layout utama untuk tampilan Desktop -->
 <div class="content">
-    <!-- Kolom kiri berisi gambar dan tombol -->
+    <!-- Kolom kiri yang berisi gambar dan tombol-tombol -->
     <div class="left-column">
-        <!-- Gambar portrait film -->
+        <!-- Gambar portrait/potret film -->
         <img class="portrait" src="./uploads/gambar/<?php echo htmlspecialchars($data['gambar'] ?? 'default.jpg'); ?>" alt="Gambar Film">
-        <!-- Group tombol watch dan love -->
+        <!-- htmlspecialchars() untuk keamanan, ?? untuk fallback image -->
+        
+        <!-- Grup tombol yang berisi watch dan love button -->
         <div class="button-group">
-            <!-- Tombol watch now yang membuka link di tab baru -->
-            <a href="<?php echo htmlspecialchars($data['link'] ?? '#'); ?>" class="watch-button" target="_blank">▶ Watch Now</a>
-            <!-- Tombol love untuk desktop -->
-            <button type="button" class="love-circle" id="desktopLoveBtn"><i class="fas fa-heart"></i></button>
+            <!-- Tombol "Watch Now" yang membuka link film di tab baru -->
+            <a href="<?php echo htmlspecialchars($data['link'] ?? '#'); ?>" class="watch-button" target="_blank">
+                <!-- Simbol play dan teks tombol -->
+                ▶ Watch Now
+            </a>
+            <!-- htmlspecialchars() untuk keamanan, target="_blank" membuka tab baru -->
+            
+            <!-- Tombol love berbentuk lingkaran untuk desktop -->
+            <button type="button" class="love-circle" id="desktopLoveBtn">
+                <!-- Ikon heart dari Font Awesome -->
+                <i class="fas fa-heart"></i>
+            </button>
+            <!-- type="button" mencegah form submission, id untuk JavaScript -->
         </div>
     </div>
 
-    <!-- Kolom kanan berisi informasi detail film -->
+    <!-- Kolom kanan yang berisi informasi detail film -->
     <div class="right-column">
-        <!-- Sinopsis film -->
+        <!-- Paragraf untuk menampilkan sinopsis film -->
         <p><?php echo htmlspecialchars($data['sinopsis'] ?? 'Sinopsis tidak tersedia'); ?></p>
-        <!-- Informasi actor -->
+        <!-- htmlspecialchars() untuk keamanan, ?? untuk teks default -->
+        
+        <!-- Label dan informasi actor -->
         <strong>Actor:</strong>
         <p><?php echo htmlspecialchars($data['actor'] ?? 'Informasi actor tidak tersedia'); ?></p>
-        <!-- Informasi director -->
+        
+        <!-- Label dan informasi director -->
         <strong>Director:</strong>
         <p><?php echo htmlspecialchars($data['direktor'] ?? 'Informasi director tidak tersedia'); ?></p>
-        <!-- Informasi durasi -->
+        
+        <!-- Label dan informasi durasi film -->
         <strong>Duration:</strong>
         <p><?php echo htmlspecialchars($data['duration'] ?? 'Informasi durasi tidak tersedia'); ?></p>
     </div>
 </div>
 
-<!-- Layout untuk Mobile -->
+<!-- Layout khusus untuk tampilan Mobile -->
 <div class="mobile-content">
-    <!-- Header mobile dengan gambar dan tombol -->
+    <!-- Header mobile yang berisi gambar dan tombol -->
     <div class="mobile-header">
-        <!-- Gambar portrait untuk mobile -->
+        <!-- Gambar portrait untuk tampilan mobile -->
         <img class="mobile-portrait" src="./uploads/gambar/<?php echo htmlspecialchars($data['gambar'] ?? 'default.jpg'); ?>" alt="Gambar Film">
-        <!-- Group tombol untuk mobile -->
+        
+        <!-- Grup tombol khusus untuk mobile -->
         <div class="mobile-button-group">
             <!-- Tombol watch yang memanggil fungsi JavaScript -->
             <button onclick="openYouTube('<?php echo addslashes($data['link'] ?? '#'); ?>')" class="mobile-watch-button">
+                <!-- Ikon play dan teks tombol -->
                 <i class="fas fa-play"></i> Watch Now
             </button>
+            <!-- onclick memanggil fungsi JS, addslashes() menambah escape untuk quote -->
+            
             <!-- Tombol love untuk mobile -->
-            <button type="button" class="mobile-love-circle" id="mobileLoveBtn"><i class="fas fa-heart"></i></button>
+            <button type="button" class="mobile-love-circle" id="mobileLoveBtn">
+                <i class="fas fa-heart"></i>
+            </button>
         </div>
     </div>
 
-    <!-- Konten teks untuk mobile -->
+    <!-- Konten teks untuk tampilan mobile -->
     <div class="mobile-text-content">
-        <!-- Section sinopsis -->
+        <!-- Section untuk sinopsis -->
         <div class="info-section">
             <p><?php echo htmlspecialchars($data['sinopsis'] ?? 'Sinopsis tidak tersedia'); ?></p>
         </div>
 
-        <!-- Section actor -->
+        <!-- Section untuk informasi actor -->
         <div class="info-section">
             <strong>Actor:</strong>
             <p><?php echo htmlspecialchars($data['actor'] ?? 'Informasi actor tidak tersedia'); ?></p>
         </div>
 
-        <!-- Section director -->
+        <!-- Section untuk informasi director -->
         <div class="info-section">
             <strong>Director:</strong>
             <p><?php echo htmlspecialchars($data['direktor'] ?? 'Informasi director tidak tersedia'); ?></p>
         </div>
 
-        <!-- Section duration -->
+        <!-- Section untuk informasi durasi -->
         <div class="info-section">
             <strong>Duration:</strong>
             <p><?php echo htmlspecialchars($data['duration'] ?? 'Informasi durasi tidak tersedia'); ?></p>
@@ -134,21 +187,25 @@ if ($id_film) {
 </div>
 
 <script>
-// Fungsi untuk membuka YouTube dengan deteksi device
+// Fungsi JavaScript untuk membuka YouTube dengan deteksi device
 function openYouTube(link) {
-    // Cek apakah link valid
+    // Cek apakah link valid atau bukan '#'
     if (!link || link === '#') return;
     
+    // Variabel untuk menyimpan link final
     let finalLink = link;
-    // Konversi youtu.be ke format youtube.com
+    
+    // Konversi link youtu.be ke format youtube.com yang standar
     if (link.includes('youtu.be/')) {
+        // Ekstrak video ID dari URL youtu.be
         const videoId = link.split('youtu.be/')[1].split('?')[0];
+        // Buat URL YouTube standar
         finalLink = `https://www.youtube.com/watch?v=${videoId}`;
     }
     
-    // Deteksi apakah device mobile
+    // Deteksi apakah user menggunakan device mobile
     if (/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        // Untuk mobile: buka di tab yang sama
+        // Untuk mobile: buka di tab yang sama (redirect)
         window.location.href = finalLink;
     } else {
         // Untuk desktop: buka di tab baru
@@ -156,39 +213,44 @@ function openYouTube(link) {
     }
 }
 
-// Event listener saat DOM sudah loaded
+// Event listener yang dijalankan setelah DOM selesai dimuat
 document.addEventListener('DOMContentLoaded', function () {
-    // Ambil referensi tombol love desktop dan mobile
+    // Mengambil referensi elemen tombol love desktop
     const desktopLoveButton = document.querySelector('#desktopLoveBtn');
+    // Mengambil referensi elemen tombol love mobile
     const mobileLoveButton = document.querySelector('#mobileLoveBtn');
 
-    // Fungsi untuk sinkronisasi status love dari localStorage
+    // Fungsi untuk menyinkronkan status love dari localStorage
     function syncLoveStatus() {
+        // Cek apakah film sudah di-love berdasarkan localStorage
         const isLoved = localStorage.getItem('movie_loved_id') === 'true';
         if (isLoved) {
-            // Tambahkan class 'loved' jika film disukai
+            // Tambahkan class 'loved' pada tombol desktop jika ada
             if (desktopLoveButton) desktopLoveButton.classList.add('loved');
+            // Tambahkan class 'loved' pada tombol mobile jika ada
             if (mobileLoveButton) mobileLoveButton.classList.add('loved');
         }
     }
 
     // Fungsi untuk menyimpan status love ke localStorage
     function saveLoveStatus(isLoved) {
+        // Simpan status boolean sebagai string di localStorage
         localStorage.setItem('movie_loved_id', isLoved);
     }
 
-    // Sinkronisasi status saat halaman dimuat
+    // Jalankan sinkronisasi status saat halaman pertama kali dimuat
     syncLoveStatus();
 
     // Event listener untuk tombol love desktop
     if (desktopLoveButton) {
         desktopLoveButton.addEventListener('click', function () {
-            // Toggle class 'loved'
+            // Toggle class 'loved' (tambah jika tidak ada, hapus jika ada)
             this.classList.toggle('loved');
+            // Cek apakah saat ini dalam status loved
             const isLoved = this.classList.contains('loved');
             // Simpan status ke localStorage
             saveLoveStatus(isLoved);
-            // Sinkronisasi dengan tombol mobile
+            // Sinkronisasi dengan tombol mobile agar statusnya sama
             if (mobileLoveButton) mobileLoveButton.classList.toggle('loved', isLoved);
         });
     }
@@ -196,12 +258,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event listener untuk tombol love mobile
     if (mobileLoveButton) {
         mobileLoveButton.addEventListener('click', function () {
-            // Toggle class 'loved'
+            // Toggle class 'loved' pada tombol mobile
             this.classList.toggle('loved');
+            // Cek status loved saat ini
             const isLoved = this.classList.contains('loved');
             // Simpan status ke localStorage
             saveLoveStatus(isLoved);
-            // Sinkronisasi dengan tombol desktop
+            // Sinkronisasi dengan tombol desktop agar statusnya sama
             if (desktopLoveButton) desktopLoveButton.classList.toggle('loved', isLoved);
         });
     }
@@ -209,4 +272,6 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 </body>
+<!-- Tag penutup body -->
 </html>
+<!-- Tag penutup HTML -->

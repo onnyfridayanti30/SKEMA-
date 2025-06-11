@@ -4,7 +4,7 @@
 // SKEMA Team - PHP array berisi data anggota tim
 // Membuat array multidimensional untuk menyimpan data setiap anggota tim
 $teamMembers = array(
-    // Array pertama - data anggota tim pertama
+    // Array (tempat untuk menyimpan data) pertama - data anggota tim pertama
     array(
         'name' => 'I Putu Mertayasa',                    // Nama lengkap anggota
         'class' => 'XI RPL 3 / 18',                     // Kelas dan nomor absen
