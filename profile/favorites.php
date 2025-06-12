@@ -1,5 +1,5 @@
 <?php
-session_start(); // 🔓 Mulai session supaya bisa akses data user dari $_SESSION
+session_start(); 
 
 require 'koneksi.php'; // 📂 Menghubungkan file koneksi ke database MySQL
 
@@ -59,6 +59,425 @@ while ($row = $result->fetch_assoc()) {
   <link href="https://fonts.googleapis.com/css2?family=Rammetto+One&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="favorites.css">
 </head>
+
+<style>* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #523336;
+    min-height: 100vh;
+}
+
+.header {
+    padding: 2px 130px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    background: transparent;
+}
+
+.logo {
+    font-family: "Rammetto One", sans-serif;
+    font-size: 40px;
+    color: white;
+    letter-spacing: 8px;
+}
+
+.logo .m {
+    color: #E94560;
+}
+
+.home-btn {
+    background: #E94560;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s ease;
+}
+
+.home-btn:hover {
+    background: #FF4081;
+}
+
+.menu-toggle {
+    background: #E94560;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    display: none;
+    transition: background 0.3s ease;
+}
+
+.menu-toggle:hover {
+    background: #FF4081;
+}
+
+.container {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    max-width: 1324px;
+    height: 650px;
+    margin-left: auto;
+    margin-right: auto;
+    background: #421720;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.sidebar {
+    background: white;
+    width: 250px;
+    min-height: 100%;
+    text-align: left;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    padding: 25px 30px 20px;
+    box-sizing: border-box;
+}
+
+.sidebar h2 {
+    font-size: 25px;
+    font-weight: 700;
+    margin: 0 0 25px 0;
+    color: #421720;
+    text-align: center;
+}
+
+.sidebar-item {
+    margin-bottom: 20px;
+}
+
+.sidebar-item a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    font-weight: 700;
+    color: #421720;
+    gap: 10px;
+    transition: all 0.3s ease;
+    padding: 10px 15px;
+    border-radius: 10px;
+}
+
+.sidebar-item a:hover {
+    background-color: #f9f1f1;
+}
+
+.sidebar-item.favorites-item a {
+    background-color: #ffecf1;
+}
+
+.sidebar-item svg {
+    flex-shrink: 0;
+}
+
+.logout-item {
+    margin-top: 320px;
+    padding-top: 20px;
+}
+
+.main-content {
+    flex: 1;
+    padding: 40px;
+    padding-left: 50px;
+}
+
+.profile-section {
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+    color: white;
+}
+
+.profile-pic {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-info h2 {
+    margin: 0;
+    font-size: 30px;
+}
+
+.fav-title {
+    margin-top: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+}
+
+.favorites-carousel {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.favorite-item {
+    border-radius: 10px;
+    overflow: hidden;
+    width: 240px;
+    color: white;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.favorite-item:hover {
+    transform: translateY(-5px);
+}
+
+.favorite-item img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+}
+
+.favorite-item p {
+    margin: 10px 0;
+    font-weight: 600;
+}
+
+.no-favorites {
+    color: white;
+    text-align: center;
+    padding: 40px;
+    font-size: 16px;
+}
+
+/* Overlay for mobile menu */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.overlay.active {
+    display: block;
+}
+
+/* Close button for mobile sidebar */
+.close-sidebar {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #421720;
+    cursor: pointer;
+    display: none;
+}
+
+/* RESPONSIVE STYLES */
+@media screen and (max-width: 768px) {
+
+    
+    .logo {
+        font-size: 24px;
+        letter-spacing: 4px;
+    }
+    
+    .home-btn {
+        display: none;
+    }
+    
+    .menu-toggle {
+        display: block;
+    }
+    
+    .close-sidebar {
+        display: block;
+    }
+    
+    .container {
+        margin: 10px;
+        flex-direction: column;
+        height: auto;
+        min-height: auto;
+    }
+    
+    .sidebar {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: -100%;
+        height: 100vh;
+        z-index: 1000;
+        transition: left 0.3s ease;
+        background: white;
+        overflow-y: auto;
+    }
+    
+    .sidebar.active {
+        left: 0;
+    }
+    
+    .sidebar h2 {
+        font-size: 20px;
+        margin-top: 50px;
+        margin-bottom: 30px;
+    }
+    
+    .sidebar-item a {
+        padding: 15px;
+        font-size: 16px;
+    }
+    
+    .logout-item {
+        margin-top: 50px;
+    }
+    
+    .main-content {
+        padding: 20px;
+        width: 100%;
+    }
+    
+    .profile-section {
+        flex-direction: column;
+        text-align: center;
+        margin-top: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 20px;
+        border-radius: 15px;
+    }
+    
+    .profile-pic {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+    
+    .user-info h2 {
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+    
+    .fav-title {
+        font-size: 20px;
+        text-align: center;
+        margin-top: 25px;
+    }
+    
+    .favorites-carousel {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+    }
+    
+    .favorite-item {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 10px;
+    }
+    
+    .favorite-item img {
+        height: 180px;
+        border-radius: 8px;
+    }
+    
+    .favorite-item p {
+        font-size: 13px;
+        margin: 10px 0;
+    }
+}
+
+/* Very small screens */
+@media screen and (max-width: 480px) {
+    .header {
+        padding: 12px 15px;
+      
+    }
+   .menu-toggle {
+        float: right;
+        margin-left: 210px; /* atau sesuaikan dengan posisi yang diinginkan */
+    }
+
+    .logo {
+        font-size: 20px;
+        letter-spacing: 2px;
+    }
+    
+    .container {
+        margin: 5px;
+    }
+    
+    .main-content {
+        padding: 15px;
+    }
+    
+    .profile-section {
+        padding: 15px;
+    }
+    
+    .profile-pic {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .user-info h2 {
+        font-size: 16px;
+    }
+    
+    .fav-title {
+        font-size: 18px;
+    }
+    
+    .favorites-carousel {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    
+    .favorite-item img {
+        height: 160px;
+    }
+    
+    .favorite-item p {
+        font-size: 12px;
+        margin: 8px 0;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .favorites-carousel {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .favorite-item img {
+        height: 200px;
+    }
+}</style>
+
 <body>
 
 <div class="header">
@@ -133,7 +552,7 @@ while ($row = $result->fetch_assoc()) {
 </div>
 
 <script>
-function toggleSidebar() {
+function toggleSidebar(){
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('overlay');
     
@@ -184,6 +603,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     observer.observe(sidebar, { attributes: true });
 });
+
 </script>
 
 </body>

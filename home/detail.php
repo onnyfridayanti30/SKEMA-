@@ -213,61 +213,30 @@ function openYouTube(link) {
     }
 }
 
-// Event listener yang dijalankan setelah DOM selesai dimuat
-document.addEventListener('DOMContentLoaded', function () {
-    // Mengambil referensi elemen tombol love desktop
-    const desktopLoveButton = document.querySelector('#desktopLoveBtn');
-    // Mengambil referensi elemen tombol love mobile
-    const mobileLoveButton = document.querySelector('#mobileLoveBtn');
+document.getElementById('desktopLoveBtn').addEventListener('click', function () {
+    const filmId = <?= json_encode($id_film) ?>;
 
-    // Fungsi untuk menyinkronkan status love dari localStorage
-    function syncLoveStatus() {
-        // Cek apakah film sudah di-love berdasarkan localStorage
-        const isLoved = localStorage.getItem('movie_loved_id') === 'true';
-        if (isLoved) {
-            // Tambahkan class 'loved' pada tombol desktop jika ada
-            if (desktopLoveButton) desktopLoveButton.classList.add('loved');
-            // Tambahkan class 'loved' pada tombol mobile jika ada
-            if (mobileLoveButton) mobileLoveButton.classList.add('loved');
+    fetch('../profile/add_favorite.php/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `film_id=${filmId}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert('Film berhasil ditambahkan ke favorit!');
+        } else if (data.status === 'exists') {
+            alert('Film ini sudah ada di daftar favorit kamu.');
+        } else {
+            alert('Gagal menambahkan ke favorit: ' + data.message);
         }
-    }
-
-    // Fungsi untuk menyimpan status love ke localStorage
-    function saveLoveStatus(isLoved) {
-        // Simpan status boolean sebagai string di localStorage
-        localStorage.setItem('movie_loved_id', isLoved);
-    }
-
-    // Jalankan sinkronisasi status saat halaman pertama kali dimuat
-    syncLoveStatus();
-
-    // Event listener untuk tombol love desktop
-    if (desktopLoveButton) {
-        desktopLoveButton.addEventListener('click', function () {
-            // Toggle class 'loved' (tambah jika tidak ada, hapus jika ada)
-            this.classList.toggle('loved');
-            // Cek apakah saat ini dalam status loved
-            const isLoved = this.classList.contains('loved');
-            // Simpan status ke localStorage
-            saveLoveStatus(isLoved);
-            // Sinkronisasi dengan tombol mobile agar statusnya sama
-            if (mobileLoveButton) mobileLoveButton.classList.toggle('loved', isLoved);
-        });
-    }
-
-    // Event listener untuk tombol love mobile
-    if (mobileLoveButton) {
-        mobileLoveButton.addEventListener('click', function () {
-            // Toggle class 'loved' pada tombol mobile
-            this.classList.toggle('loved');
-            // Cek status loved saat ini
-            const isLoved = this.classList.contains('loved');
-            // Simpan status ke localStorage
-            saveLoveStatus(isLoved);
-            // Sinkronisasi dengan tombol desktop agar statusnya sama
-            if (desktopLoveButton) desktopLoveButton.classList.toggle('loved', isLoved);
-        });
-    }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan.');
+    });
 });
 </script>
 

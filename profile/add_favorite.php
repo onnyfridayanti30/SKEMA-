@@ -1,37 +1,41 @@
 <?php
-session_start(); // 🧠 Mulai session supaya kita bisa ambil data user yang sedang login
+session_start();
+require 'koneksi.php'; // ganti path jika perlu
 
-require 'koneksi.php'; // 🔌 Menghubungkan ke database (file ini harus berisi $conn = mysqli_connect...)
-
-if (!isset($_SESSION["user_id"])) { // 🚧 Kalau user belum login (tidak ada user_id di session)
-    header("Location: ../login&register/login.php"); // 🔄 Arahkan ke halaman login
-    exit(); // 🛑 Hentikan eksekusi kode selanjutnya
+// Cek apakah user sudah login
+if (!isset($_SESSION['user_id'])) {
+    echo json_encode(['status' => 'error', 'message' => 'User not logged in']);
+    exit;
 }
 
-$user_id = $_SESSION["user_id"]; // 🆔 Ambil ID user dari session (user yang sedang login)
+$user_id = $_SESSION['user_id'];
+$film_id = $_POST['film_id'] ?? null;
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["detail_id"])) { 
-    // ✅ Kalau request dari form (POST) dan ada data detail_id (ID film)
-
-    $detail_id = intval($_POST["detail_id"]); // 🎞️ Ambil ID film dari form, pastikan jadi integer (aman)
-
-    // 🔍 Cek dulu apakah film ini sudah jadi favorit user atau belum
-    $check = $conn->prepare("SELECT * FROM favorites WHERE user_id = ? AND detail_id = ?");
-    $check->bind_param("ii", $user_id, $detail_id); // Isi parameter dengan user_id dan id film
-    $check->execute(); // Jalankan query
-    $result = $check->get_result(); // Ambil hasil query
-
-    if ($result->num_rows === 0) { // ❌ Kalau belum pernah difavoritkan
-        // ➕ Masukkan film ini ke tabel favorites
-        $stmt = $conn->prepare("INSERT INTO favorites (user_id, detail_id) VALUES (?, ?)");
-        $stmt->bind_param("ii", $user_id, $detail_id); // Isi parameter
-        $stmt->execute(); // Jalankan query insert
-        $stmt->close(); // Tutup prepared statement
-    }
-
-    $check->close(); // Tutup prepared statement untuk pengecekan
+if (!$film_id) {
+    echo json_encode(['status' => 'error', 'message' => 'Film ID missing']);
+    exit;
 }
 
-header("Location: ../home/detail.php?id=$detail_id"); // 🔁 Kembalikan user ke halaman detail film yang barusan difavoritkan
-exit(); // 🛑 Hentikan script setelah redirect
+// Cek apakah film sudah ada di daftar favorit
+$check_sql = "SELECT * FROM favorites WHERE user_id = ? AND detail_id = ?";
+$check_stmt = $conn->prepare($check_sql);
+$check_stmt->bind_param("ii", $user_id, $film_id);
+$check_stmt->execute();
+$check_result = $check_stmt->get_result();
+
+if ($check_result->num_rows > 0) {
+    echo json_encode(['status' => 'exists', 'message' => 'Already in favorites']);
+    exit;
+}
+
+// Simpan ke tabel favorites
+$sql = "INSERT INTO favorites (user_id, detail_id) VALUES (?, ?)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ii", $user_id, $film_id);
+
+if ($stmt->execute()) {
+    echo json_encode(['status' => 'success', 'message' => 'Added to favorites']);
+} else {
+    echo json_encode(['status' => 'error', 'message' => 'Failed to add']);
+}
 ?>

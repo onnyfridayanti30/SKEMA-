@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="home.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Rammetto+One&display=swap" rel="stylesheet">
+    <script>
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+        history.go(1);
+    };
+</script>
 </head>
 <body>
     <!-- Header -->
@@ -17,7 +23,7 @@
             </div>
             <nav class="nav">
                 <a href="#" class="nav-link">Home</a>
-                <a href="../about/about.php/" class="nav-link">About us</a>
+                <a href="../about/about.php" class="nav-link">About us</a>
                 <a href="../profile/profile.php" class="nav-link">Profile</a>
             </nav>
         </div>
@@ -41,7 +47,7 @@
     <section class="hot-section">
         <div class="container-hot-section">
             <div class="section-header">
-                <h3>Hot this month</h3>
+                <h3>All Film</h3>
              
             </div>
         </div>

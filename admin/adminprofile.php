@@ -85,7 +85,7 @@ $email = $_SESSION['email'];
     <!-- Main Content -->
     <div class="main-content"> 
       <div class="profile-header">
-        <img src="<?= htmlspecialchars($profile_image_path) ?>" alt="Profile Picture" class="profile-image">
+        <img src="" alt="Profile Picture" class="profile-image">
         <div class="profile-info">
           <h1>ACCOUNT</h1>
           <p>Edit your name, password, email, image</p>
